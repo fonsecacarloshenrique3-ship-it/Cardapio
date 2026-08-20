@@ -3,241 +3,161 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cardápio Digital | Faça seu Pedido</title>
+  <title>Cardápio Online - Trabalho de Programação Web</title>
 
-  <meta name="description" content="Cardápio digital interativo. Escolha seus pratos favoritos e faça seu pedido online!">
-  <meta name="theme-color" content="#e63946">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Cardápio">
-
+  <!-- Estilos e Ícones -->
   <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-192.png">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="manifest" href="manifest.json">
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- CABEÇALHO -->
-  <header class="main-header">
-    <div class="header-container">
-      <div class="brand-info">
-        <div class="logo-badge">🍽️</div>
-        <div>
-          <h1 class="brand-title">Sabor & Arte Gourmet</h1>
-          <p class="brand-subtitle">Cardápio Digital • Pedidos Rápidos</p>
-        </div>
-      </div>
-      <div class="header-status">
-        <span class="status-indicator online"></span>
-        <span class="status-text">Aberto para Pedidos</span>
-      </div>
-    </div>
+  <!-- ========================================================
+       1. CABEÇALHO DO PROJETO
+       ======================================================== -->
+  <header class="cabecalho">
+    <h1>🍔 Lanchonete & Cardápio Online</h1>
+    <p class="subtitulo">Trabalho Prático de Desenvolvimento Web • Pedro Joaquim</p>
   </header>
 
-  <!-- CONTEÚDO PRINCIPAL -->
-  <main class="main-container">
-    
-    <!-- BANNER DE DESTAQUE -->
-    <section class="promo-banner">
-      <div class="promo-content">
-        <span class="promo-tag">🔥 Destaque do Dia</span>
-        <h2>Monte o seu combo especial!</h2>
-        <p>Selecione seus itens favoritos abaixo e envie direto para nossa cozinha.</p>
-      </div>
-    </section>
+  <div class="container">
 
-    <!-- BARRA DE BUSCA -->
-    <section class="search-section">
-      <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="search-input" placeholder="Buscar no cardápio (ex: Burger, Coca, Batata)..." autocomplete="off">
-        <button id="clear-search" class="clear-search-btn" title="Limpar busca" style="display: none;">✕</button>
-      </div>
-    </section>
-
-    <!-- CATEGORIAS -->
-    <nav class="categories-nav" aria-label="Categorias do cardápio">
-      <div class="categories-scroll" id="categories-container">
-        <!-- Injetado dinamicamente via JS -->
-      </div>
-    </nav>
-
-    <!-- LISTAGEM DE PRODUTOS -->
-    <section class="menu-section">
-      <div class="section-header">
-        <h2 id="current-category-title" class="section-title">Todos os Itens</h2>
-        <span id="items-count-badge" class="items-count">0 itens</span>
-      </div>
-
-      <div class="products-grid" id="products-grid">
-        <!-- Injetado dinamicamente via JS -->
-      </div>
-
-      <!-- ESTADO VAZIO DE BUSCA -->
-      <div id="empty-state" class="empty-state" style="display: none;">
-        <div class="empty-icon">🍽️</div>
-        <h3>Nenhum item encontrado</h3>
-        <p>Tente buscar por outro termo ou escolha outra categoria.</p>
-        <button id="reset-filters-btn" class="btn-secondary">Ver todo o cardápio</button>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- BARRA / BOTÃO FLUTUANTE DO CARRINHO (STICKY) -->
-  <aside class="floating-cart-bar" id="floating-cart-bar">
-    <button class="cart-trigger-btn" id="open-cart-btn" aria-label="Ver carrinho de pedidos">
-      <div class="cart-trigger-info">
-        <div class="cart-icon-wrapper">
-          🛒
-          <span class="cart-badge" id="cart-badge-count">0</span>
-        </div>
-        <div class="cart-trigger-text">
-          <span class="cart-trigger-label">Ver Pedido</span>
-          <span class="cart-trigger-items" id="cart-badge-summary">0 itens adicionados</span>
-        </div>
-      </div>
-      <div class="cart-trigger-total">
-        <span class="total-label">Total</span>
-        <span class="total-value" id="cart-badge-total">R$ 0,00</span>
-      </div>
-    </button>
-  </aside>
-
-  <!-- MODAL NATIVO DO CARRINHO (<dialog>) -->
-  <dialog id="cart-dialog" class="custom-dialog cart-dialog">
-    <div class="dialog-wrapper">
+    <!-- ========================================================
+         2. FILTROS E BARRA DE BUSCA
+         ======================================================== -->
+    <section class="secao-filtros">
       
-      <div class="dialog-header">
-        <div class="dialog-title-wrapper">
-          <span class="dialog-icon">🛍️</span>
-          <div>
-            <h3>Seu Pedido</h3>
-            <p class="dialog-subtitle">Confira os itens selecionados</p>
-          </div>
-        </div>
-        <button id="close-cart-btn" class="dialog-close-btn" aria-label="Fechar carrinho">✕</button>
+      <!-- Campo de Pesquisa -->
+      <div class="busca-container">
+        <input type="text" id="campo-busca" placeholder="🔍 Digite para buscar um item (ex: Burger, Suco, Batata)...">
+        <button id="btn-limpar-busca" title="Limpar busca">✕</button>
       </div>
 
-      <div class="dialog-body">
+      <!-- Abas de Categorias -->
+      <div class="categorias-botoes" id="container-categorias">
+        <button class="btn-categoria active" data-cat="todos">🍽️ Todos</button>
+        <button class="btn-categoria" data-cat="lanches">🍔 Lanches</button>
+        <button class="btn-categoria" data-cat="porcoes">🍟 Porções</button>
+        <button class="btn-categoria" data-cat="bebidas">🥤 Bebidas</button>
+        <button class="btn-categoria" data-cat="sobremesas">🍰 Sobremesas</button>
+      </div>
+
+    </section>
+
+    <!-- ========================================================
+         3. LISTA DE PRODUTOS DO CARDÁPIO
+         ======================================================== -->
+    <section class="secao-produtos">
+      <div class="produtos-cabecalho">
+        <h2 id="titulo-categoria">Todos os Itens</h2>
+        <span id="contador-produtos" class="tag-contador">0 itens disponíveis</span>
+      </div>
+
+      <div class="grid-produtos" id="grid-produtos">
+        <!-- Produtos inseridos via JavaScript -->
+      </div>
+
+      <div id="mensagem-vazio" class="mensagem-vazio" style="display: none;">
+        <p>❌ Nenhum produto encontrado com essa busca.</p>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         4. SEÇÃO DO CARRINHO DE COMPRAS E PEDIDO
+         ======================================================== -->
+    <section class="secao-carrinho" id="secao-carrinho">
+      <h2>🛒 Meu Pedido</h2>
+      
+      <!-- Lista de Itens Adicionados -->
+      <div class="carrinho-lista" id="carrinho-lista">
+        <p class="carrinho-vazio-msg">Seu carrinho está vazio. Clique em "+ Adicionar" nos produtos acima!</p>
+      </div>
+
+      <!-- Resumo de Valores -->
+      <div class="carrinho-total-box" id="carrinho-total-box" style="display: none;">
+        <div class="linha-total">
+          <span>Quantidade de itens:</span>
+          <strong id="qtd-total-itens">0</strong>
+        </div>
+        <div class="linha-total valor-destaque">
+          <span>Total do Pedido:</span>
+          <strong id="valor-total-pedido">R$ 0,00</strong>
+        </div>
+        <button id="btn-esvaziar-carrinho" class="btn-secundario">🗑️ Esvaziar Carrinho</button>
+      </div>
+
+      <!-- Formulário de Atendimento -->
+      <div class="formulario-pedido" id="form-pedido-box" style="display: none;">
+        <h3>📋 Dados para Entrega / Atendimento</h3>
+
+        <div class="campo-form">
+          <label for="nome-cliente">Nome do Cliente *</label>
+          <input type="text" id="nome-cliente" placeholder="Digite seu nome completo">
+        </div>
+
+        <div class="campo-form">
+          <label for="tipo-entrega">Tipo de Atendimento *</label>
+          <select id="tipo-entrega">
+            <option value="mesa">Consumo no Local (Mesa)</option>
+            <option value="balcao">Retirada no Balcão</option>
+            <option value="delivery">Entrega (Delivery)</option>
+          </select>
+        </div>
+
+        <div class="campo-form" id="box-local">
+          <label for="local-entrega" id="label-local">Número da Mesa *</label>
+          <input type="text" id="local-entrega" placeholder="Ex: Mesa 05">
+        </div>
+
+        <div class="campo-form">
+          <label for="forma-pagamento">Forma de Pagamento *</label>
+          <select id="forma-pagamento">
+            <option value="PIX">PIX</option>
+            <option value="Cartão de Crédito">Cartão de Crédito</option>
+            <option value="Cartão de Débito">Cartão de Débito</option>
+            <option value="Dinheiro">Dinheiro</option>
+          </select>
+        </div>
+
+        <div class="campo-form">
+          <label for="observacoes">Observações (opcional)</label>
+          <textarea id="observacoes" rows="2" placeholder="Ex: Sem cebola, ponto da carne bem passado..."></textarea>
+        </div>
+
+        <button id="btn-finalizar-pedido" class="btn-principal">✅ Finalizar e Confirmar Pedido</button>
+      </div>
+
+    </section>
+
+    <!-- ========================================================
+         5. ÁREA DE RESUMO DO PEDIDO FINALIZADO
+         ======================================================== -->
+    <section class="secao-recibo" id="secao-recibo" style="display: none;">
+      <div class="recibo-card">
+        <h3>🎉 Pedido Registrado com Sucesso!</h3>
+        <p>Abaixo está o comprovante formatado do seu pedido:</p>
         
-        <!-- ITENS DO CARRINHO -->
-        <div class="cart-items-container" id="cart-items-list">
-          <!-- Injetado dinamicamente -->
-        </div>
+        <pre id="texto-recibo" class="caixa-recibo"></pre>
 
-        <!-- CARRINHO VAZIO -->
-        <div class="cart-empty-view" id="cart-empty-view" style="display: none;">
-          <span class="empty-cart-icon">🛒</span>
-          <h4>Seu carrinho está vazio</h4>
-          <p>Adicione deliciosas opções do nosso cardápio para começar.</p>
-          <button id="back-to-menu-btn" class="btn-primary">Explorar Cardápio</button>
-        </div>
-
-        <!-- FORMULÁRIO DE ENTREGA / MESA -->
-        <form id="order-form" class="order-form">
-          <h4 class="form-section-title">Dados para Entrega / Atendimento</h4>
-
-          <div class="form-group">
-            <label for="customer-name">Seu Nome *</label>
-            <input type="text" id="customer-name" placeholder="Ex: Carlos Henrique" required>
-          </div>
-
-          <div class="form-group">
-            <label for="order-type">Tipo de Pedido *</label>
-            <select id="order-type">
-              <option value="mesa">Consumo no Local (Mesa)</option>
-              <option value="retirada">Retirada no Balcão</option>
-              <option value="delivery">Entrega (Delivery)</option>
-            </select>
-          </div>
-
-          <div class="form-group" id="location-group">
-            <label for="customer-location" id="location-label">Número da Mesa *</label>
-            <input type="text" id="customer-location" placeholder="Ex: Mesa 04" required>
-          </div>
-
-          <div class="form-group">
-            <label for="payment-method">Forma de Pagamento *</label>
-            <select id="payment-method">
-              <option value="Pix">PIX (Chave na entrega/balcão)</option>
-              <option value="Cartão de Crédito">Cartão de Crédito</option>
-              <option value="Cartão de Débito">Cartão de Débito</option>
-              <option value="Dinheiro">Dinheiro</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="order-notes">Observações do Pedido</label>
-            <textarea id="order-notes" rows="2" placeholder="Ex: Sem cebola, ponto da carne bem passado, troco para R$ 50..."></textarea>
-          </div>
-        </form>
-
-      </div>
-
-      <!-- RODAPÉ DO CARRINHO / RESUMO DE VALORES -->
-      <div class="dialog-footer" id="cart-footer">
-        <div class="order-summary-box">
-          <div class="summary-row">
-            <span>Subtotal</span>
-            <span id="summary-subtotal">R$ 0,00</span>
-          </div>
-          <div class="summary-row total-row">
-            <span>Total a Pagar</span>
-            <span id="summary-total" class="highlight-price">R$ 0,00</span>
-          </div>
-        </div>
-
-        <div class="dialog-actions">
-          <button type="button" id="clear-cart-btn" class="btn-outline-danger">Esvaziar</button>
-          <button type="button" id="submit-order-btn" class="btn-checkout">
-            <span>Finalizar Pedido</span>
-            <span class="btn-arrow">➔</span>
-          </button>
+        <div class="botoes-recibo">
+          <button id="btn-enviar-whatsapp" class="btn-whatsapp">📲 Enviar Pedido no WhatsApp</button>
+          <button id="btn-copiar-recibo" class="btn-secundario">📋 Copiar Resumo</button>
+          <button id="btn-novo-pedido" class="btn-novo">🔄 Fazer Outro Pedido</button>
         </div>
       </div>
+    </section>
 
-    </div>
-  </dialog>
+  </div>
 
-  <!-- MODAL DE PEDIDO CONFIRMADO (<dialog>) -->
-  <dialog id="success-dialog" class="custom-dialog success-dialog">
-    <div class="dialog-wrapper">
-      <div class="success-content">
-        <div class="success-icon-animation">✅</div>
-        <h3>Pedido Realizado com Sucesso!</h3>
-        <p id="success-message">Seu pedido foi registrado e está pronto para ser preparado.</p>
+  <!-- Rodapé Acadêmico -->
+  <footer class="rodape">
+    <p>Projeto de Extensão / Acadêmico • Criado com HTML5, CSS3 e JavaScript Puro</p>
+  </footer>
 
-        <div class="order-receipt-preview" id="order-receipt-preview">
-          <!-- Resumo do pedido gerado -->
-        </div>
+  <!-- Notificação Toast Simples -->
+  <div id="aviso-toast" class="aviso-toast"></div>
 
-        <div class="success-actions">
-          <button id="whatsapp-send-btn" class="btn-whatsapp">
-            <span>📲 Enviar via WhatsApp</span>
-          </button>
-          <button id="copy-order-btn" class="btn-secondary">
-            <span>📋 Copiar Resumo</span>
-          </button>
-          <button id="new-order-btn" class="btn-primary">
-            <span>Fazer Novo Pedido</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </dialog>
-
-  <!-- NOTIFICAÇÃO TOAST FLUTUANTE -->
-  <div id="toast" class="toast" role="alert" aria-live="assertive"></div>
-
-  <!-- SCRIPTS -->
+  <!-- Script Principal -->
   <script src="app.js"></script>
 </body>
 </html>

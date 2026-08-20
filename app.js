@@ -1,674 +1,543 @@
-/**
+﻿/**
  * ==========================================================================
- * CARDÁPIO DIGITAL INTERATIVO - APLICAÇÃO WEB
+ * PROJETO: CARDÁPIO ONLINE INTERATIVO (TRABALHO ACADÊMICO)
+ * ALUNO: Pedro Joaquim
+ * DISCIPLINA: Programação Web / Front-End
+ * TECNOLOGIAS: HTML5, CSS3 e JavaScript Puro (Vanilla JS)
  * ==========================================================================
  */
 
 // ==========================================================================
-// 1. BANCO DE DADOS DE PRODUTOS E CATEGORIAS
+// 1. BANCO DE DADOS DOS PRODUTOS (Array de Objetos)
 // ==========================================================================
-const CATEGORIES = [
-  { id: 'todos', name: 'Todos', icon: '🍽️' },
-  { id: 'combos', name: 'Combos', icon: '🌟' },
-  { id: 'lanches', name: 'Lanches', icon: '🍔' },
-  { id: 'porcoes', name: 'Porções', icon: '🍟' },
-  { id: 'bebidas', name: 'Bebidas', icon: '🥤' },
-  { id: 'sobremesas', name: 'Sobremesas', icon: '🍰' }
-];
-
-const PRODUCTS = [
-  // COMBOS
+const PRODUTOS = [
+  // Lanches
   {
     id: 1,
-    name: 'Combo Smash Master',
-    category: 'combos',
-    price: 44.90,
-    icon: '🍔',
-    tag: 'Mais Vendido',
-    description: '1 Smash Burger Duplo + 1 Batata Frita Individual + 1 Refrigerante Lata 350ml.'
+    nome: "X-Bacon Artesanal",
+    categoria: "lanches",
+    preco: 28.50,
+    icone: "🍔",
+    descricao: "Pão brioche, hambúrguer de carne bovina 150g, queijo cheddar, fatias de bacon crocante e maionese da casa."
   },
   {
     id: 2,
-    name: 'Combo Casal Gourmet',
-    category: 'combos',
-    price: 79.90,
-    icon: '🌟',
-    tag: 'Especial',
-    description: '2 Hambúrgueres Artesanais à sua escolha + 1 Porção Grande de Fritas + 2 Bebidas.'
+    nome: "X-Salada Clássico",
+    categoria: "lanches",
+    preco: 24.00,
+    icone: "🍔",
+    descricao: "Pão com gergelim, hambúrguer bovino, queijo muçarela, alface fresca, rodelas de tomate e molho especial."
   },
-
-  // LANCHES
   {
     id: 3,
-    name: 'X-Bacon Artesanal',
-    category: 'lanches',
-    price: 34.50,
-    icon: '🥓',
-    tag: 'Favorito',
-    description: 'Pão brioche selado na manteiga, blend bovino 160g, muito bacon crocante, queijo cheddar e maionese especial.'
+    nome: "X-Frango Crocante",
+    categoria: "lanches",
+    preco: 26.00,
+    icone: "🍗",
+    descricao: "Pão brioche, filé de frango empanado crocante, queijo, alface e molho tártaro."
   },
   {
     id: 4,
-    name: 'Smash Duplo Cheddar',
-    category: 'lanches',
-    price: 29.90,
-    icon: '🍔',
-    tag: 'Artesanal',
-    description: '2 carnes smash de 90g ultra prensadas com crostinha crocante, dobro de cheddar cremoso e cebola caramelizada.'
+    nome: "X-Tudo Especial",
+    categoria: "lanches",
+    preco: 32.00,
+    icone: "🥪",
+    descricao: "Hambúrguer bovino, bacon, ovo frito, presunto, queijo, calabresa, alface, tomate e milho."
   },
+
+  // Porções
   {
     id: 5,
-    name: 'Chicken Crispy Supreme',
-    category: 'lanches',
-    price: 31.00,
-    icon: '🍗',
-    tag: 'Crocante',
-    description: 'Sobrecoxa de frango empanada ultra crocante, alface americana fresca, picles artesanal e molho tártaro da casa.'
+    nome: "Batata Frita com Cheddar e Bacon",
+    categoria: "porcoes",
+    preco: 26.00,
+    icone: "🍟",
+    descricao: "Porção generosa de batatas fritas crocantes com queijo cheddar derretido e cubinhos de bacon."
   },
   {
     id: 6,
-    name: 'Veggie Melt Burger',
-    category: 'lanches',
-    price: 32.00,
-    icon: '🥑',
-    tag: 'Vegetariano',
-    description: 'Hambúrguer artesanal de grão de bico e cogumelos frescos, queijo muçarela derretido, tomate confit e rúcula.'
+    nome: "Batata Frita Simples",
+    categoria: "porcoes",
+    preco: 18.00,
+    icone: "🍟",
+    descricao: "Porção individual de batata frita bem sequinha e temperada com sal."
   },
-
-  // PORÇÕES
   {
     id: 7,
-    name: 'Batata Rústica Cheddar & Bacon',
-    category: 'porcoes',
-    price: 28.90,
-    icon: '🍟',
-    tag: 'Top Porção',
-    description: 'Batatas rústicas douradas e crocantes, cobertas com blend de queijo cheddar derretido e cubos de bacon.'
+    nome: "Coxinha sem Massa (6 unidades)",
+    categoria: "porcoes",
+    preco: 22.00,
+    icone: "🥟",
+    descricao: "Coxinhas crocantes recheadas 100% com frango desfiado temperado e requeijão cremoso."
   },
+
+  // Bebidas
   {
     id: 8,
-    name: 'Anéis de Cebola Empanados',
-    category: 'porcoes',
-    price: 24.00,
-    icon: '🧅',
-    tag: 'Petisco',
-    description: 'Anéis de cebola gigantes empanados em farinha especial crocante, servidos com molho barbecue artesanal.'
+    nome: "Refrigerante Lata 350ml",
+    categoria: "bebidas",
+    preco: 6.00,
+    icone: "🥤",
+    descricao: "Coca-Cola, Guaraná Antarctica ou Fanta Laranja gelada."
   },
   {
     id: 9,
-    name: 'Coxinha Gourmet sem Massa (6 un)',
-    category: 'porcoes',
-    price: 26.50,
-    icon: '🥟',
-    tag: 'Delícia',
-    description: 'Puro recheio de frango desfiado com requeijão cremoso, empanadas e fritas na hora com casquinha crocante.'
+    nome: "Suco Natural de Laranja 500ml",
+    categoria: "bebidas",
+    preco: 9.00,
+    icone: "🍊",
+    descricao: "Suco de laranja natural espremido na hora, servido bem gelado."
   },
-
-  // BEBIDAS
   {
     id: 10,
-    name: 'Coca-Cola Original 350ml',
-    category: 'bebidas',
-    price: 7.00,
-    icon: '🥤',
-    tag: 'Gelada',
-    description: 'Lata 350ml trincando de gelada.'
+    nome: "Água Mineral 500ml",
+    categoria: "bebidas",
+    preco: 4.00,
+    icone: "💧",
+    descricao: "Garrafinha de água mineral sem gás bem gelada."
   },
+
+  // Sobremesas
   {
     id: 11,
-    name: 'Coca-Cola Sem Açúcar 350ml',
-    category: 'bebidas',
-    price: 7.00,
-    icon: '🥤',
-    tag: 'Zero',
-    description: 'Lata 350ml trincando de gelada, sem calorias.'
+    nome: "Pudim de Leite Condensado",
+    categoria: "sobremesas",
+    preco: 10.00,
+    icone: "🍮",
+    descricao: "Fatia de pudim caseiro com calda cremosa de caramelo."
   },
   {
     id: 12,
-    name: 'Suco Natural de Laranja 500ml',
-    category: 'bebidas',
-    price: 11.00,
-    icon: '🍊',
-    tag: 'Natural',
-    description: 'Suco feito na hora com 100% laranjas frescas selecionadas, sem adição de conservantes.'
-  },
-  {
-    id: 13,
-    name: 'Limonada Suíça com Hortelã 500ml',
-    category: 'bebidas',
-    price: 12.50,
-    icon: '🍋',
-    tag: 'Refrescante',
-    description: 'Limões frescos batidos com leite condensado e folhas de hortelã fresca.'
-  },
-
-  // SOBREMESAS
-  {
-    id: 14,
-    name: 'Milkshake de Nutella & Leite Ninho',
-    category: 'sobremesas',
-    price: 22.90,
-    icon: '🍨',
-    tag: 'Imperdível',
-    description: 'Sorvete artesanal batido com Nutella pura legítima, borda recheada e finalizado com leite ninho em pó.'
-  },
-  {
-    id: 15,
-    name: 'Brownie Quentinho com Sorvete',
-    category: 'sobremesas',
-    price: 19.50,
-    icon: '🍫',
-    tag: 'Gourmet',
-    description: 'Brownie de chocolate belga morno com castanhas, acompanhado de uma bola generosa de sorvete de baunilha.'
-  },
-  {
-    id: 16,
-    name: 'Pudim de Leite Condensado',
-    category: 'sobremesas',
-    price: 14.00,
-    icon: '🍮',
-    tag: 'Tradicional',
-    description: 'Fatia generosa do clássico pudim aveludado sem furinhos, com calda de caramelo dourada.'
+    nome: "Brownie com Sorvete de Baunilha",
+    categoria: "sobremesas",
+    preco: 16.50,
+    icone: "🍫",
+    descricao: "Brownie de chocolate morno acompanhado de uma bola de sorvete de baunilha."
   }
 ];
 
 // ==========================================================================
-// 2. ESTADO DA APLICAÇÃO
+// 2. VARIÁVEIS E ESTADO DO SISTEMA
 // ==========================================================================
-let currentCategory = 'todos';
-let searchQuery = '';
-let cart = loadCartFromStorage();
-let lastCompletedOrderText = '';
-
-// ==========================================================================
-// 3. ELEMENTOS DO DOM
-// ==========================================================================
-const categoriesContainer = document.getElementById('categories-container');
-const productsGrid = document.getElementById('products-grid');
-const searchInput = document.getElementById('search-input');
-const clearSearchBtn = document.getElementById('clear-search');
-const currentCategoryTitle = document.getElementById('current-category-title');
-const itemsCountBadge = document.getElementById('items-count-badge');
-const emptyState = document.getElementById('empty-state');
-const resetFiltersBtn = document.getElementById('reset-filters-btn');
-
-// Carrinho Flutuante
-const floatingCartBar = document.getElementById('floating-cart-bar');
-const openCartBtn = document.getElementById('open-cart-btn');
-const cartBadgeCount = document.getElementById('cart-badge-count');
-const cartBadgeSummary = document.getElementById('cart-badge-summary');
-const cartBadgeTotal = document.getElementById('cart-badge-total');
-
-// Dialog Carrinho
-const cartDialog = document.getElementById('cart-dialog');
-const closeCartBtn = document.getElementById('close-cart-btn');
-const cartItemsList = document.getElementById('cart-items-list');
-const cartEmptyView = document.getElementById('cart-empty-view');
-const orderForm = document.getElementById('order-form');
-const cartFooter = document.getElementById('cart-footer');
-const summarySubtotal = document.getElementById('summary-subtotal');
-const summaryTotal = document.getElementById('summary-total');
-const clearCartBtn = document.getElementById('clear-cart-btn');
-const submitOrderBtn = document.getElementById('submit-order-btn');
-const backToMenuBtn = document.getElementById('back-to-menu-btn');
-
-// Form inputs
-const customerNameInput = document.getElementById('customer-name');
-const orderTypeSelect = document.getElementById('order-type');
-const customerLocationInput = document.getElementById('customer-location');
-const locationLabel = document.getElementById('location-label');
-const paymentMethodSelect = document.getElementById('payment-method');
-const orderNotesInput = document.getElementById('order-notes');
-
-// Dialog Sucesso
-const successDialog = document.getElementById('success-dialog');
-const orderReceiptPreview = document.getElementById('order-receipt-preview');
-const whatsappSendBtn = document.getElementById('whatsapp-send-btn');
-const copyOrderBtn = document.getElementById('copy-order-btn');
-const newOrderBtn = document.getElementById('new-order-btn');
-
-// Toast
-const toast = document.getElementById('toast');
+let categoriaAtual = "todos";
+let textoBusca = "";
+let carrinho = carregarCarrinhoDoLocalStorage();
+let textoReciboFormatado = "";
 
 // ==========================================================================
-// 4. FORMATADORES E UTILITÁRIOS
+// 3. CAPTURA DOS ELEMENTOS DO DOM (HTML)
 // ==========================================================================
-const currencyFormatter = new Intl.NumberFormat('pt-BR', {
-  style: 'currency',
-  currency: 'BRL'
-});
+const gridProdutos = document.getElementById("grid-produtos");
+const tituloCategoria = document.getElementById("titulo-categoria");
+const contadorProdutos = document.getElementById("contador-produtos");
+const campoBusca = document.getElementById("campo-busca");
+const btnLimparBusca = document.getElementById("btn-limpar-busca");
+const containerCategorias = document.getElementById("container-categorias");
+const mensagemVazio = document.getElementById("mensagem-vazio");
 
-function formatPrice(value) {
-  return currencyFormatter.format(value);
+// Elementos do Carrinho
+const carrinhoLista = document.getElementById("carrinho-lista");
+const carrinhoTotalBox = document.getElementById("carrinho-total-box");
+const formPedidoBox = document.getElementById("form-pedido-box");
+const qtdTotalItens = document.getElementById("qtd-total-itens");
+const valorTotalPedido = document.getElementById("valor-total-pedido");
+const btnEsvaziarCarrinho = document.getElementById("btn-esvaziar-carrinho");
+
+// Campos do Formulário
+const nomeCliente = document.getElementById("nome-cliente");
+const tipoEntrega = document.getElementById("tipo-entrega");
+const localEntrega = document.getElementById("local-entrega");
+const labelLocal = document.getElementById("label-local");
+const formaPagamento = document.getElementById("forma-pagamento");
+const observacoes = document.getElementById("observacoes");
+const btnFinalizarPedido = document.getElementById("btn-finalizar-pedido");
+
+// Elementos da Área de Recibo
+const secaoRecibo = document.getElementById("secao-recibo");
+const textoRecibo = document.getElementById("texto-recibo");
+const btnEnviarWhatsapp = document.getElementById("btn-enviar-whatsapp");
+const btnCopiarRecibo = document.getElementById("btn-copiar-recibo");
+const btnNovoPedido = document.getElementById("btn-novo-pedido");
+
+// Toast de Notificação
+const avisoToast = document.getElementById("aviso-toast");
+
+// ==========================================================================
+// 4. FUNÇÕES UTILITÁRIAS
+// ==========================================================================
+
+// Formata número para formato de moeda brasileira (R$)
+function formatarMoeda(valor) {
+  return "R$ " + valor.toFixed(2).replace(".", ",");
 }
 
-function showToast(message, icon = '✅') {
-  if (!toast) return;
-  toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
-  toast.classList.add('show');
+// Exibe um pequeno aviso na tela por alguns segundos
+function mostrarAviso(mensagem) {
+  if (!avisoToast) return;
+  avisoToast.textContent = mensagem;
+  avisoToast.style.display = "block";
   
-  clearTimeout(toast.timeoutId);
-  toast.timeoutId = setTimeout(() => {
-    toast.classList.remove('show');
-  }, 2800);
+  clearTimeout(avisoToast.tempo);
+  avisoToast.tempo = setTimeout(function () {
+    avisoToast.style.display = "none";
+  }, 2500);
 }
 
-// ==========================================================================
-// 5. GERENCIAMENTO DO CARRINHO (STORAGE & FUNÇÕES)
-// ==========================================================================
-function loadCartFromStorage() {
+// Salva e carrega o carrinho do LocalStorage
+function salvarCarrinhoNoLocalStorage() {
+  localStorage.setItem("trabalho_carrinho", JSON.stringify(carrinho));
+}
+
+function carregarCarrinhoDoLocalStorage() {
   try {
-    const saved = localStorage.getItem('cardapio_cart');
-    return saved ? JSON.parse(saved) : [];
+    const dados = localStorage.getItem("trabalho_carrinho");
+    return dados ? JSON.parse(dados) : [];
   } catch (e) {
-    console.error('Erro ao carregar carrinho:', e);
     return [];
   }
 }
 
-function saveCartToStorage() {
-  try {
-    localStorage.setItem('cardapio_cart', JSON.stringify(cart));
-  } catch (e) {
-    console.error('Erro ao salvar carrinho:', e);
-  }
-}
+// ==========================================================================
+// 5. FUNÇÃO PARA EXIBIR OS PRODUTOS (RENDERIZAÇÃO)
+// ==========================================================================
+function renderizarProdutos() {
+  // Filtra produtos pela categoria e pelo campo de busca
+  const produtosFiltrados = PRODUTOS.filter(function (produto) {
+    const bateuCategoria = (categoriaAtual === "todos") || (produto.categoria === categoriaAtual);
+    const bateuBusca = (textoBusca === "") || 
+      produto.nome.toLowerCase().includes(textoBusca.toLowerCase()) ||
+      produto.descricao.toLowerCase().includes(textoBusca.toLowerCase());
 
-function addToCart(productId) {
-  const product = PRODUCTS.find(p => p.id === productId);
-  if (!product) return;
+    return bateuCategoria && bateuBusca;
+  });
 
-  const existingItem = cart.find(item => item.id === productId);
+  // Atualiza contadores e títulos
+  contadorProdutos.textContent = produtosFiltrados.length + " itens disponíveis";
 
-  if (existingItem) {
-    existingItem.quantity += 1;
+  if (categoriaAtual === "todos") {
+    tituloCategoria.textContent = textoBusca ? `Resultados para "${textoBusca}"` : "Todos os Itens";
   } else {
-    cart.push({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      icon: product.icon,
-      quantity: 1
-    });
+    tituloCategoria.textContent = "Categoria: " + categoriaAtual.toUpperCase();
   }
 
-  saveCartToStorage();
-  updateCartUI();
-  showToast(`${product.name} adicionado ao pedido!`, '🛒');
-}
-
-function updateItemQuantity(productId, delta) {
-  const itemIndex = cart.findIndex(item => item.id === productId);
-  if (itemIndex === -1) return;
-
-  cart[itemIndex].quantity += delta;
-
-  if (cart[itemIndex].quantity <= 0) {
-    cart.splice(itemIndex, 1);
-    showToast('Item removido do pedido', '🗑️');
-  }
-
-  saveCartToStorage();
-  updateCartUI();
-}
-
-function removeItemFromCart(productId) {
-  cart = cart.filter(item => item.id !== productId);
-  saveCartToStorage();
-  updateCartUI();
-  showToast('Item removido do pedido', '🗑️');
-}
-
-function clearCart() {
-  if (cart.length === 0) return;
-  cart = [];
-  saveCartToStorage();
-  updateCartUI();
-  showToast('Carrinho esvaziado com sucesso', '🧹');
-}
-
-function getCartTotals() {
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  return { totalItems, subtotal, total: subtotal };
-}
-
-// ==========================================================================
-// 6. RENDERIZAÇÃO DA INTERFACE (UI)
-// ==========================================================================
-
-// Renderiza abas de categorias
-function renderCategories() {
-  if (!categoriesContainer) return;
-
-  categoriesContainer.innerHTML = CATEGORIES.map(cat => `
-    <button 
-      class="category-tab ${cat.id === currentCategory ? 'active' : ''}" 
-      data-category="${cat.id}"
-      aria-label="Categoria ${cat.name}"
-    >
-      <span>${cat.icon}</span>
-      <span>${cat.name}</span>
-    </button>
-  `).join('');
-
-  // Event listeners para as abas
-  categoriesContainer.querySelectorAll('.category-tab').forEach(btn => {
-    btn.addEventListener('click', () => {
-      currentCategory = btn.dataset.category;
-      renderCategories();
-      renderProducts();
-    });
-  });
-}
-
-// Renderiza lista de produtos
-function renderProducts() {
-  if (!productsGrid) return;
-
-  // Filtragem por categoria e busca
-  const filtered = PRODUCTS.filter(product => {
-    const matchCategory = currentCategory === 'todos' || product.category === currentCategory;
-    const matchSearch = searchQuery === '' || 
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchCategory && matchSearch;
-  });
-
-  // Atualiza título da seção
-  const currentCatObj = CATEGORIES.find(c => c.id === currentCategory);
-  if (currentCategoryTitle) {
-    currentCategoryTitle.textContent = currentCategory === 'todos' 
-      ? (searchQuery ? `Resultados para "${searchQuery}"` : 'Todos os Itens') 
-      : `${currentCatObj.icon} ${currentCatObj.name}`;
-  }
-
-  if (itemsCountBadge) {
-    itemsCountBadge.textContent = `${filtered.length} ${filtered.length === 1 ? 'item' : 'itens'}`;
-  }
-
-  // Estado vazio
-  if (filtered.length === 0) {
-    productsGrid.innerHTML = '';
-    if (emptyState) emptyState.style.display = 'block';
+  // Verifica se a busca não retornou nada
+  if (produtosFiltrados.length === 0) {
+    gridProdutos.innerHTML = "";
+    mensagemVazio.style.display = "block";
     return;
+  } else {
+    mensagemVazio.style.display = "none";
   }
 
-  if (emptyState) emptyState.style.display = 'none';
+  // Limpa o grid e cria os cards de cada produto
+  gridProdutos.innerHTML = "";
 
-  // Renderiza os cards
-  productsGrid.innerHTML = filtered.map(product => `
-    <article class="product-card" data-id="${product.id}">
-      <div class="product-top">
-        <div class="product-icon">${product.icon}</div>
-        <div class="product-details">
-          <div class="product-header-row">
-            <h3 class="product-title">${product.name}</h3>
-            ${product.tag ? `<span class="product-tag">${product.tag}</span>` : ''}
-          </div>
-          <p class="product-desc">${product.description}</p>
+  produtosFiltrados.forEach(function (produto) {
+    const card = document.createElement("div");
+    card.className = "card-produto";
+
+    card.innerHTML = `
+      <div class="card-produto-topo">
+        <div class="card-icone">${produto.icone}</div>
+        <div class="card-info">
+          <h3>${produto.nome}</h3>
+          <p class="card-desc">${produto.descricao}</p>
         </div>
       </div>
-      <div class="product-bottom">
-        <span class="product-price">${formatPrice(product.price)}</span>
-        <button class="btn-add-item" onclick="addToCart(${product.id})" aria-label="Adicionar ${product.name} ao pedido">
-          <span>+ Adicionar</span>
+      <div class="card-produto-rodape">
+        <span class="card-preco">${formatarMoeda(produto.preco)}</span>
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho(${produto.id})">
+          + Adicionar
         </button>
       </div>
-    </article>
-  `).join('');
-}
+    `;
 
-// Atualiza toda a visualização do carrinho (Badge flutuante + Modal)
-function updateCartUI() {
-  const { totalItems, total } = getCartTotals();
-
-  // 1. Atualizar Botão Flutuante
-  if (cartBadgeCount) cartBadgeCount.textContent = totalItems;
-  if (cartBadgeSummary) {
-    cartBadgeSummary.textContent = totalItems === 0 
-      ? 'Nenhum item adicionado' 
-      : `${totalItems} ${totalItems === 1 ? 'item selecionado' : 'itens selecionados'}`;
-  }
-  if (cartBadgeTotal) cartBadgeTotal.textContent = formatPrice(total);
-
-  // 2. Atualizar Lista dentro do Dialog
-  if (cartItemsList) {
-    if (cart.length === 0) {
-      cartItemsList.innerHTML = '';
-      if (cartEmptyView) cartEmptyView.style.display = 'block';
-      if (orderForm) orderForm.style.display = 'none';
-      if (cartFooter) cartFooter.style.display = 'none';
-    } else {
-      if (cartEmptyView) cartEmptyView.style.display = 'none';
-      if (orderForm) orderForm.style.display = 'block';
-      if (cartFooter) cartFooter.style.display = 'block';
-
-      cartItemsList.innerHTML = cart.map(item => `
-        <div class="cart-item-row" data-id="${item.id}">
-          <div class="cart-item-info">
-            <div class="cart-item-name">${item.icon} ${item.name}</div>
-            <div class="cart-item-unit-price">${formatPrice(item.price)} cada</div>
-          </div>
-          <div class="cart-item-controls">
-            <button class="qty-btn" onclick="updateItemQuantity(${item.id}, -1)" title="Diminuir quantidade" aria-label="Diminuir">-</button>
-            <span class="qty-val">${item.quantity}</span>
-            <button class="qty-btn" onclick="updateItemQuantity(${item.id}, 1)" title="Aumentar quantidade" aria-label="Aumentar">+</button>
-          </div>
-          <div class="cart-item-subtotal">${formatPrice(item.price * item.quantity)}</div>
-          <button class="cart-item-remove-btn" onclick="removeItemFromCart(${item.id})" title="Remover item" aria-label="Remover">✕</button>
-        </div>
-      `).join('');
-    }
-  }
-
-  // 3. Atualizar Totais do Rodapé do Modal
-  if (summarySubtotal) summarySubtotal.textContent = formatPrice(total);
-  if (summaryTotal) summaryTotal.textContent = formatPrice(total);
+    gridProdutos.appendChild(card);
+  });
 }
 
 // ==========================================================================
-// 7. DIALOGS & FLUXO DE PEDIDO
+// 6. FUNÇÕES DE MANIPULAÇÃO DO CARRINHO
 // ==========================================================================
 
-// Abrir e fechar Dialog do Carrinho
-function openCart() {
-  updateCartUI();
-  if (cartDialog && typeof cartDialog.showModal === 'function') {
-    cartDialog.showModal();
-  }
-}
-
-function closeCart() {
-  if (cartDialog) cartDialog.close();
-}
-
-// Adaptação dos campos conforme o tipo de pedido selecionado
-function handleOrderTypeChange() {
-  const type = orderTypeSelect.value;
-  if (type === 'mesa') {
-    locationLabel.textContent = 'Número da Mesa *';
-    customerLocationInput.placeholder = 'Ex: Mesa 04';
-    customerLocationInput.required = true;
-  } else if (type === 'delivery') {
-    locationLabel.textContent = 'Endereço Completo de Entrega *';
-    customerLocationInput.placeholder = 'Ex: Rua das Flores, 123 - Apto 402 - Bairro';
-    customerLocationInput.required = true;
-  } else {
-    locationLabel.textContent = 'Ponto de Retirada';
-    customerLocationInput.placeholder = 'Balcão Principal';
-    customerLocationInput.required = false;
-  }
-}
-
-// Finalização do Pedido
-function handleOrderSubmit() {
-  if (cart.length === 0) {
-    showToast('Adicione pelo menos um item ao pedido!', '⚠️');
-    return;
-  }
-
-  const name = customerNameInput.value.trim();
-  const orderType = orderTypeSelect.options[orderTypeSelect.selectedIndex].text;
-  const location = customerLocationInput.value.trim();
-  const payment = paymentMethodSelect.value;
-  const notes = orderNotesInput.value.trim();
-
-  if (!name) {
-    showToast('Por favor, informe seu nome.', '⚠️');
-    customerNameInput.focus();
-    return;
-  }
-
-  if (orderTypeSelect.value !== 'retirada' && !location) {
-    showToast('Por favor, preencha o número da mesa ou endereço.', '⚠️');
-    customerLocationInput.focus();
-    return;
-  }
-
-  const { total } = getCartTotals();
-  const dateStr = new Date().toLocaleString('pt-BR');
-
-  // Constrói o texto formatado do pedido
-  let receipt = `====================================\n`;
-  receipt += `🍽️ SABOR & ARTE GOURMET\n`;
-  receipt += `Data: ${dateStr}\n`;
-  receipt += `====================================\n\n`;
-  receipt += `👤 CLIENTE: ${name}\n`;
-  receipt += `📍 TIPO: ${orderType} ${location ? `(${location})` : ''}\n`;
-  receipt += `💳 PAGAMENTO: ${payment}\n\n`;
-  receipt += `📝 ITENS DO PEDIDO:\n`;
-  receipt += `------------------------------------\n`;
-
-  cart.forEach(item => {
-    receipt += `${item.quantity}x ${item.name} - ${formatPrice(item.price * item.quantity)}\n`;
+// Adiciona um produto ao carrinho
+function adicionarAoCarrinho(idProduto) {
+  const produto = PRODUTOS.find(function (p) {
+    return p.id === idProduto;
   });
 
-  receipt += `------------------------------------\n`;
-  receipt += `💰 TOTAL: ${formatPrice(total)}\n`;
-  receipt += `====================================\n`;
+  if (!produto) return;
 
-  if (notes) {
-    receipt += `\n🗒️ OBSERVAÇÕES:\n${notes}\n`;
+  const itemExistente = carrinho.find(function (item) {
+    return item.id === idProduto;
+  });
+
+  if (itemExistente) {
+    itemExistente.quantidade += 1;
+  } else {
+    carrinho.push({
+      id: produto.id,
+      nome: produto.nome,
+      preco: produto.preco,
+      icone: produto.icone,
+      quantidade: 1
+    });
   }
 
-  lastCompletedOrderText = receipt;
-
-  // Fecha carrinho e abre modal de sucesso
-  closeCart();
-  if (orderReceiptPreview) {
-    orderReceiptPreview.textContent = receipt;
-  }
-
-  if (successDialog && typeof successDialog.showModal === 'function') {
-    successDialog.showModal();
-  }
-
-  // Limpa o carrinho após finalizar
-  clearCart();
+  salvarCarrinhoNoLocalStorage();
+  atualizarCarrinhoUI();
+  mostrarAviso(`✅ ${produto.nome} adicionado ao pedido!`);
 }
 
-// Envio para WhatsApp
-function sendOrderToWhatsApp() {
-  if (!lastCompletedOrderText) return;
-  const encoded = encodeURIComponent(lastCompletedOrderText);
-  // Abre o link do WhatsApp (pode ser configurado com número específico)
-  window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
+// Altera a quantidade de um item (+1 ou -1)
+function alterarQuantidade(idProduto, delta) {
+  const item = carrinho.find(function (i) {
+    return i.id === idProduto;
+  });
+
+  if (!item) return;
+
+  item.quantidade += delta;
+
+  if (item.quantidade <= 0) {
+    removerDoCarrinho(idProduto);
+    return;
+  }
+
+  salvarCarrinhoNoLocalStorage();
+  atualizarCarrinhoUI();
 }
 
-// Copiar resumo do pedido
-function copyOrderReceipt() {
-  if (!lastCompletedOrderText) return;
-  navigator.clipboard.writeText(lastCompletedOrderText)
-    .then(() => showToast('Resumo copiado para a área de transferência!', '📋'))
-    .catch(() => showToast('Não foi possível copiar o texto', '❌'));
+// Remove o item completamente do carrinho
+function removerDoCarrinho(idProduto) {
+  carrinho = carrinho.filter(function (item) {
+    return item.id !== idProduto;
+  });
+
+  salvarCarrinhoNoLocalStorage();
+  atualizarCarrinhoUI();
+  mostrarAviso("🗑️ Item removido do carrinho.");
+}
+
+// Esvazia todo o carrinho
+function esvaziarCarrinho() {
+  if (carrinho.length === 0) return;
+  
+  if (confirm("Deseja realmente limpar todo o carrinho?")) {
+    carrinho = [];
+    salvarCarrinhoNoLocalStorage();
+    atualizarCarrinhoUI();
+    mostrarAviso("🧹 Carrinho esvaziado com sucesso!");
+  }
+}
+
+// Calcula totais do carrinho
+function calcularTotais() {
+  let totalItens = 0;
+  let valorTotal = 0;
+
+  carrinho.forEach(function (item) {
+    totalItens += item.quantidade;
+    valorTotal += (item.preco * item.quantidade);
+  });
+
+  return { totalItens: totalItens, valorTotal: valorTotal };
+}
+
+// Atualiza a visualização do carrinho na tela
+function atualizarCarrinhoUI() {
+  if (carrinho.length === 0) {
+    carrinhoLista.innerHTML = `<p class="carrinho-vazio-msg">Seu carrinho está vazio. Clique em "+ Adicionar" nos produtos acima!</p>`;
+    carrinhoTotalBox.style.display = "none";
+    formPedidoBox.style.display = "none";
+    return;
+  }
+
+  carrinhoTotalBox.style.display = "block";
+  formPedidoBox.style.display = "block";
+
+  carrinhoLista.innerHTML = "";
+
+  carrinho.forEach(function (item) {
+    const subtotal = item.preco * item.quantidade;
+    const linha = document.createElement("div");
+    linha.className = "carrinho-item";
+
+    linha.innerHTML = `
+      <div class="carrinho-item-info">
+        <div class="carrinho-item-nome">${item.icone} ${item.nome}</div>
+        <div class="carrinho-item-unitario">${formatarMoeda(item.preco)} cada</div>
+      </div>
+      <div class="carrinho-controles">
+        <button class="btn-qtd" onclick="alterarQuantidade(${item.id}, -1)">-</button>
+        <span class="qtd-numero">${item.quantidade}</span>
+        <button class="btn-qtd" onclick="alterarQuantidade(${item.id}, 1)">+</button>
+      </div>
+      <div class="carrinho-subtotal">${formatarMoeda(subtotal)}</div>
+      <button class="btn-remover-item" onclick="removerDoCarrinho(${item.id})" title="Remover item">✕</button>
+    `;
+
+    carrinhoLista.appendChild(linha);
+  });
+
+  const totais = calcularTotais();
+  qtdTotalItens.textContent = totais.totalItens;
+  valorTotalPedido.textContent = formatarMoeda(totais.valorTotal);
+}
+
+// ==========================================================================
+// 7. FINALIZAÇÃO DO PEDIDO E GERAÇÃO DE RECIBO
+// ==========================================================================
+function finalizarPedido() {
+  if (carrinho.length === 0) {
+    alert("Adicione pelo menos um item ao seu pedido antes de finalizar!");
+    return;
+  }
+
+  const nome = nomeCliente.value.trim();
+  const tipo = tipoEntrega.options[tipoEntrega.selectedIndex].text;
+  const local = localEntrega.value.trim();
+  const pagamento = formaPagamento.value;
+  const obs = observacoes.value.trim();
+
+  // Validação simples
+  if (nome === "") {
+    alert("Por favor, preencha o seu nome!");
+    nomeCliente.focus();
+    return;
+  }
+
+  if (tipoEntrega.value !== "balcao" && local === "") {
+    alert("Por favor, informe a mesa ou o endereço de entrega!");
+    localEntrega.focus();
+    return;
+  }
+
+  const totais = calcularTotais();
+  const dataHoje = new Date().toLocaleString("pt-BR");
+
+  // Monta o texto formatado do recibo
+  let texto = "========================================\n";
+  texto += "🍔 LANCHONETE & CARDÁPIO ONLINE\n";
+  texto += "Data: " + dataHoje + "\n";
+  texto += "========================================\n\n";
+  texto += "👤 Cliente: " + nome + "\n";
+  texto += "📍 Atendimento: " + tipo + (local ? " (" + local + ")" : "") + "\n";
+  texto += "💳 Pagamento: " + pagamento + "\n\n";
+  texto += "📝 ITENS SELECIONADOS:\n";
+  texto += "----------------------------------------\n";
+
+  carrinho.forEach(function (item) {
+    const subtotal = item.preco * item.quantidade;
+    texto += `${item.quantidade}x ${item.nome} - ${formatarMoeda(subtotal)}\n`;
+  });
+
+  texto += "----------------------------------------\n";
+  texto += "💰 VALOR TOTAL: " + formatarMoeda(totais.valorTotal) + "\n";
+  texto += "========================================\n";
+
+  if (obs !== "") {
+    texto += "\n🗒️ Observações: " + obs + "\n";
+  }
+
+  textoReciboFormatado = texto;
+  textoRecibo.textContent = texto;
+  secaoRecibo.style.display = "block";
+
+  // Rola até a área do comprovante
+  secaoRecibo.scrollIntoView({ behavior: "smooth" });
+
+  // Limpa o carrinho
+  carrinho = [];
+  salvarCarrinhoNoLocalStorage();
+  atualizarCarrinhoUI();
+  mostrarAviso("🎉 Pedido finalizado com sucesso!");
+}
+
+// Enviar resumo para o WhatsApp
+function enviarWhatsApp() {
+  if (!textoReciboFormatado) return;
+  const textoUrl = encodeURIComponent(textoReciboFormatado);
+  window.open("https://api.whatsapp.com/send?text=" + textoUrl, "_blank");
+}
+
+// Copiar recibo
+function copiarRecibo() {
+  if (!textoReciboFormatado) return;
+  navigator.clipboard.writeText(textoReciboFormatado)
+    .then(function () {
+      mostrarAviso("📋 Comprovante copiado com sucesso!");
+    })
+    .catch(function () {
+      alert("Não foi possível copiar o texto automaticamente.");
+    });
 }
 
 // ==========================================================================
 // 8. CONFIGURAÇÃO DE EVENTOS E INICIALIZAÇÃO
 // ==========================================================================
-function setupEventListeners() {
+function inicializarEventos() {
+  // Filtro por abas de categorias
+  const botoesCategoria = containerCategorias.querySelectorAll(".btn-categoria");
+  botoesCategoria.forEach(function (botao) {
+    botao.addEventListener("click", function () {
+      botoesCategoria.forEach(function (b) { b.classList.remove("active"); });
+      botao.classList.add("active");
+
+      categoriaAtual = botao.dataset.cat;
+      renderizarProdutos();
+    });
+  });
+
   // Busca em tempo real
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      searchQuery = e.target.value.trim();
-      if (clearSearchBtn) {
-        clearSearchBtn.style.display = searchQuery ? 'flex' : 'none';
-      }
-      renderProducts();
-    });
-  }
+  campoBusca.addEventListener("input", function (e) {
+    textoBusca = e.target.value.trim();
+    renderizarProdutos();
+  });
 
-  if (clearSearchBtn) {
-    clearSearchBtn.addEventListener('click', () => {
-      searchInput.value = '';
-      searchQuery = '';
-      clearSearchBtn.style.display = 'none';
-      renderProducts();
-      searchInput.focus();
-    });
-  }
+  btnLimparBusca.addEventListener("click", function () {
+    campoBusca.value = "";
+    textoBusca = "";
+    renderizarProdutos();
+    campoBusca.focus();
+  });
 
-  if (resetFiltersBtn) {
-    resetFiltersBtn.addEventListener('click', () => {
-      currentCategory = 'todos';
-      searchQuery = '';
-      if (searchInput) searchInput.value = '';
-      if (clearSearchBtn) clearSearchBtn.style.display = 'none';
-      renderCategories();
-      renderProducts();
-    });
-  }
+  // Mudança no tipo de entrega
+  tipoEntrega.addEventListener("change", function () {
+    if (tipoEntrega.value === "mesa") {
+      labelLocal.textContent = "Número da Mesa *";
+      localEntrega.placeholder = "Ex: Mesa 05";
+      localEntrega.required = true;
+    } else if (tipoEntrega.value === "delivery") {
+      labelLocal.textContent = "Endereço Completo para Entrega *";
+      localEntrega.placeholder = "Ex: Rua das Palmeiras, 100 - Bairro Centro";
+      localEntrega.required = true;
+    } else {
+      labelLocal.textContent = "Ponto de Retirada";
+      localEntrega.placeholder = "Balcão Principal";
+      localEntrega.required = false;
+    }
+  });
 
-  // Carrinho
-  if (openCartBtn) openCartBtn.addEventListener('click', openCart);
-  if (closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
-  if (clearCartBtn) clearCartBtn.addEventListener('click', clearCart);
-  if (submitOrderBtn) submitOrderBtn.addEventListener('click', handleOrderSubmit);
-  if (backToMenuBtn) backToMenuBtn.addEventListener('click', closeCart);
-
-  // Mudança no tipo de pedido (Mesa / Delivery / Balcão)
-  if (orderTypeSelect) {
-    orderTypeSelect.addEventListener('change', handleOrderTypeChange);
-  }
-
-  // Sucesso
-  if (whatsappSendBtn) whatsappSendBtn.addEventListener('click', sendOrderToWhatsApp);
-  if (copyOrderBtn) copyOrderBtn.addEventListener('click', copyOrderReceipt);
-  if (newOrderBtn) {
-    newOrderBtn.addEventListener('click', () => {
-      if (successDialog) successDialog.close();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
-
-  // Fechar dialog ao clicar no backdrop (Light Dismiss)
-  [cartDialog, successDialog].forEach(dialog => {
-    if (!dialog) return;
-    dialog.addEventListener('click', (event) => {
-      const rect = dialog.getBoundingClientRect();
-      const isInDialog = (
-        rect.top <= event.clientY &&
-        event.clientY <= rect.top + rect.height &&
-        rect.left <= event.clientX &&
-        event.clientX <= rect.left + rect.width
-      );
-      if (!isInDialog) {
-        dialog.close();
-      }
-    });
+  // Botões de Ação
+  btnEsvaziarCarrinho.addEventListener("click", esvaziarCarrinho);
+  btnFinalizarPedido.addEventListener("click", finalizarPedido);
+  btnEnviarWhatsapp.addEventListener("click", enviarWhatsApp);
+  btnCopiarRecibo.addEventListener("click", copiarRecibo);
+  btnNovoPedido.addEventListener("click", function () {
+    secaoRecibo.style.display = "none";
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
 }
 
-// Expor funções necessárias globalmente para os atributos onclick inline
-window.addToCart = addToCart;
-window.updateItemQuantity = updateItemQuantity;
-window.removeItemFromCart = removeItemFromCart;
+// Expor funções chamadas inline no HTML
+window.adicionarAoCarrinho = adicionarAoCarrinho;
+window.alterarQuantidade = alterarQuantidade;
+window.removerDoCarrinho = removerDoCarrinho;
 
-// Inicialização da aplicação
-document.addEventListener('DOMContentLoaded', () => {
-  renderCategories();
-  renderProducts();
-  updateCartUI();
-  setupEventListeners();
-});
+// Inicializar quando a página carregar
+document.addEventListener("DOMContentLoaded", function () {
+  renderizarProdutos();
+  atualizarCarrinhoUI();
+  inicializarEventos();
+});

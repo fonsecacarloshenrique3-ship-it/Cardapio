@@ -1,42 +1,52 @@
-====================================================
-🍽️ CARDÁPIO DIGITAL INTERATIVO COM PEDIDOS
-====================================================
+﻿==========================================================================
+TRABALHO ACADÊMICO: SISTEMA DE CARDÁPIO E PEDIDOS ONLINE
+ALUNO: Pedro Joaquim
+DISCIPLINA: Desenvolvimento Web / Programação Front-End
+TECNOLOGIAS: HTML5, CSS3 e JavaScript Puro (Vanilla JS)
+==========================================================================
 
-1. FUNCIONALIDADES PRINCIPAIS
-
- - Catálogo com Categorias:
-   Navegação dinâmica por abas (Todos, Combos, Lanches, Porções, Bebidas, Sobremesas).
- 
- - Busca em Tempo Real:
-   Filtro instantâneo por nome ou ingredientes do produto com botão de limpar.
-
- - Seleção e Carrinho Inteligente:
-   Adição rápida de itens com botão "+ Adicionar", controle de quantidade (+ / -), 
-   remoção e esvaziamento completo do carrinho.
-
- - Cálculo Automático do Total:
-   Atualização imediata do subtotal, quantidade de itens e valor total a pagar (R$).
-
- - Formulário de Atendimento e Checkout:
-   Suporte a Consumo no Local (com número da mesa), Entrega (com endereço) 
-   e Retirada no balcão, seleção de forma de pagamento (PIX, Cartão, Dinheiro) 
-   e campo de observações para a cozinha.
-
- - Envio para WhatsApp e Cópia do Pedido:
-   Gera automaticamente um resumo detalhado e estruturado para enviar direto 
-   para o WhatsApp do restaurante ou copiar para a área de transferência.
-
- - Persistência:
-   Itens do carrinho salvos no LocalStorage para não perder pedidos se recarregar a página.
-
- - Design Responsivo & PWA:
-   Otimizado para celulares e computadores com barra flutuante de acesso rápido ao pedido.
+1. OBJETIVO DO PROJETO
+Desenvolver uma aplicação web interativa de cardápio digital para uma lanchonete,
+permitindo a visualização de produtos por categorias, busca textual, adição e 
+controle de itens em um carrinho de compras, cálculo automático do valor total e
+geração de comprovante de pedido com opção de envio para o WhatsApp.
 
 
-2. ESTRUTURA DOS ARQUIVOS
+2. ESTRUTURA E ORGANIZAÇÃO DOS ARQUIVOS
 
- - index.html: Estrutura semântica com modais nativos (<dialog>) e navegação por categorias.
- - style.css: Design moderno, responsivo, tipografia Google Fonts (Plus Jakarta Sans) e animações suaves.
- - app.js: Lógica do catálogo, gerenciamento do estado do carrinho, filtros e checkout.
- - manifest.json: Configuração PWA para instalação no smartphone.
- - icons/: Ícones do aplicativo.
+- index.html:
+  Contém toda a estrutura semântica da página dividida em seções claras:
+  • Cabeçalho com identificação do trabalho e título da lanchonete;
+  • Filtros de categorias em botões e campo de pesquisa;
+  • Grade dinâmica para exibição dos produtos cadastrados;
+  • Seção do carrinho de compras com lista de itens selecionados e formulário de dados;
+  • Área de recibo / comprovante final.
+
+- style.css:
+  Folha de estilos estruturada e comentada por seções:
+  • Reset de margens e configuração de tipografia padrão;
+  • Estilização dos cards de produtos com ícones, preços destacados e botões;
+  • Layout responsivo usando CSS Grid e Flexbox;
+  • Estilos para o carrinho e comprovante final com cores intuitivas (verde para sucesso, vermelho para ações principais).
+
+- app.js:
+  Lógica de programação em JavaScript dividida e comentada em etapas:
+  • 1. Banco de Dados: Array de objetos `PRODUTOS` com id, nome, categoria, preço, ícone e descrição;
+  • 2. Captura de Elementos: Uso de `document.getElementById` para manipulação do DOM;
+  • 3. Renderização Dinâmica: Função `renderizarProdutos()` que gera os cards dinamicamente com base nos filtros;
+  • 4. Filtros: Filtragem combinada por categoria e campo de busca usando o método `.filter()`;
+  • 5. Carrinho de Compras: Funções para adicionar (`adicionarAoCarrinho`), alterar quantidade (+ / -), remover e limpar;
+  • 6. Cálculo de Totais: Função `calcularTotais()` que percorre os itens e calcula a soma correta dos valores;
+  • 7. Armazenamento Local: Uso de `localStorage` (`JSON.stringify` e `JSON.parse`) para persistir os dados do carrinho;
+  • 8. Validação e Finalização: Validação de campos obrigatórios (nome, mesa/endereço) e montagem do comprovante formatado;
+  • 9. Integração com WhatsApp: Uso de `encodeURIComponent` e `window.open` para enviar os dados do pedido.
+
+
+3. TESTES E CASOS DE USO REALIZADOS
+
+1. Filtro de Categorias: Ao clicar em "Lanches", "Porções", "Bebidas" ou "Sobremesas", apenas os itens correspondentes são exibidos.
+2. Busca em Tempo Real: Ao digitar "Burger" ou "Suco", a listagem filtra instantaneamente.
+3. Adição ao Carrinho: Clicar em "+ Adicionar" insere o produto no carrinho e atualiza o total automaticamente.
+4. Ajuste de Quantidade: Botões "+" e "-" alteram a quantidade e o subtotal em tempo real. Se a quantidade chegar a zero, o item é removido.
+5. Validação de Formulário: Ao tentar finalizar sem nome ou sem mesa/endereço, o sistema exibe alertas avisando o usuário.
+6. Geração do Comprovante: Ao preencher os dados e finalizar, o sistema limpa o carrinho e exibe o resumo completo formatado.
