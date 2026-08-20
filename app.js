@@ -1,650 +1,187 @@
-﻿/**
- * ==========================================================================
- * CARDÁPIO DIGITAL INTERATIVO - SABOR & ARTE GOURMET
- * Aplicação Web Progressiva (PWA)
- * ==========================================================================
- */
-
 // ==========================================================================
-// 1. BANCO DE DADOS DE PRODUTOS E CATEGORIAS
+// CARDÁPIO DIGITAL - SELEÇÃO DE PEDIDOS COM PREÇO
 // ==========================================================================
-const CATEGORIES = [
-  { id: 'todos', name: 'Todos', icon: '🍽️' },
-  { id: 'combos', name: 'Combos', icon: '🌟' },
-  { id: 'lanches', name: 'Lanches', icon: '🍔' },
-  { id: 'porcoes', name: 'Porções', icon: '🍟' },
-  { id: 'bebidas', name: 'Bebidas', icon: '🥤' },
-  { id: 'sobremesas', name: 'Sobremesas', icon: '🍰' }
-];
 
-const PRODUCTS = [
-  // COMBOS
-  {
-    id: 1,
-    name: 'Combo Smash Master',
-    category: 'combos',
-    price: 44.90,
-    icon: '🍔',
-    tag: 'Mais Vendido',
-    description: '1 Smash Burger Duplo + 1 Batata Frita Individual + 1 Refrigerante Lata 350ml.'
-  },
-  {
-    id: 2,
-    name: 'Combo Casal Gourmet',
-    category: 'combos',
-    price: 79.90,
-    icon: '🌟',
-    tag: 'Especial',
-    description: '2 Hambúrgueres Artesanais à sua escolha + 1 Porção Grande de Fritas + 2 Bebidas.'
-  },
+// Elementos da tela
+const campo = document.getElementById("campo");
+const campoPreco = document.getElementById("campo-preco");
+const botao = document.getElementById("botao");
+const lista = document.getElementById("lista");
+const contador = document.getElementById("contador");
+const totalPedido = document.getElementById("total-pedido");
+const btnLimpar = document.getElementById("btn-limpar");
+const btnPedir = document.getElementById("btn-pedir");
 
-  // LANCHES
-  {
-    id: 3,
-    name: 'X-Bacon Artesanal',
-    category: 'lanches',
-    price: 34.50,
-    icon: '🥓',
-    tag: 'Favorito',
-    description: 'Pão brioche selado na manteiga, blend bovino 160g, muito bacon crocante, queijo cheddar e maionese especial.'
-  },
-  {
-    id: 4,
-    name: 'Smash Duplo Cheddar',
-    category: 'lanches',
-    price: 29.90,
-    icon: '🍔',
-    tag: 'Artesanal',
-    description: '2 carnes smash de 90g ultra prensadas com crostinha crocante, dobro de cheddar cremoso e cebola caramelizada.'
-  },
-  {
-    id: 5,
-    name: 'Chicken Crispy Supreme',
-    category: 'lanches',
-    price: 31.00,
-    icon: '🍗',
-    tag: 'Crocante',
-    description: 'Sobrecoxa de frango empanada ultra crocante, alface americana fresca, picles artesanal e molho tártaro da casa.'
-  },
-  {
-    id: 6,
-    name: 'Veggie Melt Burger',
-    category: 'lanches',
-    price: 32.00,
-    icon: '🥑',
-    tag: 'Vegetariano',
-    description: 'Hambúrguer artesanal de grão de bico e cogumelos frescos, queijo muçarela derretido, tomate confit e rúcula.'
-  },
-
-  // PORÇÕES
-  {
-    id: 7,
-    name: 'Batata Rústica Cheddar & Bacon',
-    category: 'porcoes',
-    price: 28.90,
-    icon: '🍟',
-    tag: 'Top Porção',
-    description: 'Batatas rústicas douradas e crocantes, cobertas com blend de queijo cheddar derretido e cubos de bacon.'
-  },
-  {
-    id: 8,
-    name: 'Anéis de Cebola Empanados',
-    category: 'porcoes',
-    price: 24.00,
-    icon: '🧅',
-    tag: 'Petisco',
-    description: 'Anéis de cebola gigantes empanados em farinha especial crocante, servidos com molho barbecue artesanal.'
-  },
-  {
-    id: 9,
-    name: 'Coxinha Gourmet sem Massa (6 un)',
-    category: 'porcoes',
-    price: 26.50,
-    icon: '🥟',
-    tag: 'Delícia',
-    description: 'Puro recheio de frango desfiado com requeijão cremoso, empanadas e fritas na hora com casquinha crocante.'
-  },
-
-  // BEBIDAS
-  {
-    id: 10,
-    name: 'Coca-Cola Original 350ml',
-    category: 'bebidas',
-    price: 7.00,
-    icon: '🥤',
-    tag: 'Gelada',
-    description: 'Lata 350ml trincando de gelada.'
-  },
-  {
-    id: 11,
-    name: 'Coca-Cola Sem Açúcar 350ml',
-    category: 'bebidas',
-    price: 7.00,
-    icon: '🥤',
-    tag: 'Zero',
-    description: 'Lata 350ml trincando de gelada, sem calorias.'
-  },
-  {
-    id: 12,
-    name: 'Suco Natural de Laranja 500ml',
-    category: 'bebidas',
-    price: 11.00,
-    icon: '🍊',
-    tag: 'Natural',
-    description: 'Suco feito na hora com 100% laranjas frescas selecionadas, sem adição de conservantes.'
-  },
-  {
-    id: 13,
-    name: 'Limonada Suíça com Hortelã 500ml',
-    category: 'bebidas',
-    price: 12.50,
-    icon: '🍋',
-    tag: 'Refrescante',
-    description: 'Limões frescos batidos com leite condensado e folhas de hortelã fresca.'
-  },
-
-  // SOBREMESAS
-  {
-    id: 14,
-    name: 'Milkshake de Nutella & Leite Ninho',
-    category: 'sobremesas',
-    price: 22.90,
-    icon: '🍨',
-    tag: 'Imperdível',
-    description: 'Sorvete artesanal batido com Nutella pura legítima, borda recheada e finalizado com leite ninho em pó.'
-  },
-  {
-    id: 15,
-    name: 'Brownie Quentinho com Sorvete',
-    category: 'sobremesas',
-    price: 19.50,
-    icon: '🍫',
-    tag: 'Gourmet',
-    description: 'Brownie de chocolate belga morno com castanhas, acompanhado de uma bola generosa de sorvete de baunilha.'
-  },
-  {
-    id: 16,
-    name: 'Pudim de Leite Condensado',
-    category: 'sobremesas',
-    price: 14.00,
-    icon: '🍮',
-    tag: 'Tradicional',
-    description: 'Fatia generosa do clássico pudim aveludado sem furinhos, com calda de caramelo dourada.'
-  }
-];
-
-// ==========================================================================
-// 2. ESTADO DA APLICAÇÃO
-// ==========================================================================
-let currentCategory = 'todos';
-let searchQuery = '';
-let cart = loadCartFromStorage();
-let lastCompletedOrderText = '';
-
-// ==========================================================================
-// 3. ELEMENTOS DO DOM
-// ==========================================================================
-const categoriesContainer = document.getElementById('categories-container');
-const productsGrid = document.getElementById('products-grid');
-const searchInput = document.getElementById('search-input');
-const clearSearchBtn = document.getElementById('clear-search');
-const currentCategoryTitle = document.getElementById('current-category-title');
-const itemsCountBadge = document.getElementById('items-count-badge');
-const emptyState = document.getElementById('empty-state');
-const resetFiltersBtn = document.getElementById('reset-filters-btn');
-
-// Carrinho Flutuante
-const floatingCartBar = document.getElementById('floating-cart-bar');
-const openCartBtn = document.getElementById('open-cart-btn');
-const cartBadgeCount = document.getElementById('cart-badge-count');
-const cartBadgeSummary = document.getElementById('cart-badge-summary');
-const cartBadgeTotal = document.getElementById('cart-badge-total');
-
-// Dialog Carrinho
-const cartDialog = document.getElementById('cart-dialog');
-const closeCartBtn = document.getElementById('close-cart-btn');
-const cartItemsList = document.getElementById('cart-items-list');
-const cartEmptyView = document.getElementById('cart-empty-view');
-const orderForm = document.getElementById('order-form');
-const cartFooter = document.getElementById('cart-footer');
-const summarySubtotal = document.getElementById('summary-subtotal');
-const summaryTotal = document.getElementById('summary-total');
-const clearCartBtn = document.getElementById('clear-cart-btn');
-const submitOrderBtn = document.getElementById('submit-order-btn');
-const backToMenuBtn = document.getElementById('back-to-menu-btn');
-
-// Form inputs
-const customerNameInput = document.getElementById('customer-name');
-const orderTypeSelect = document.getElementById('order-type');
-const customerLocationInput = document.getElementById('customer-location');
-const locationLabel = document.getElementById('location-label');
-const paymentMethodSelect = document.getElementById('payment-method');
-const orderNotesInput = document.getElementById('order-notes');
-
-// Dialog Sucesso
-const successDialog = document.getElementById('success-dialog');
-const orderReceiptPreview = document.getElementById('order-receipt-preview');
-const whatsappSendBtn = document.getElementById('whatsapp-send-btn');
-const copyOrderBtn = document.getElementById('copy-order-btn');
-const newOrderBtn = document.getElementById('new-order-btn');
-
-// Toast
-const toast = document.getElementById('toast');
-
-// ==========================================================================
-// 4. FORMATADORES E UTILITÁRIOS
-// ==========================================================================
-const currencyFormatter = new Intl.NumberFormat('pt-BR', {
-  style: 'currency',
-  currency: 'BRL'
-});
-
-function formatPrice(value) {
-  return currencyFormatter.format(value);
+// Formatar número como moeda brasileira (R$)
+function formatarMoeda(valor) {
+  return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
-function showToast(message, icon = '✅') {
-  if (!toast) return;
-  toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
-  toast.classList.add('show');
-  
-  clearTimeout(toast.timeoutId);
-  toast.timeoutId = setTimeout(() => {
-    toast.classList.remove('show');
-  }, 2800);
-}
+// NÍVEL 3: Atualiza o contador de selecionados e a soma total do pedido
+function atualizarContador() {
+  const totalItens = lista.children.length;
+  const selecionados = document.querySelectorAll("#lista li.selecionado");
+  const qtdSelecionados = selecionados.length;
 
-// ==========================================================================
-// 5. GERENCIAMENTO DO CARRINHO (STORAGE & FUNÇÕES)
-// ==========================================================================
-function loadCartFromStorage() {
-  try {
-    const saved = localStorage.getItem('cardapio_cart');
-    return saved ? JSON.parse(saved) : [];
-  } catch (e) {
-    console.error('Erro ao carregar carrinho:', e);
-    return [];
-  }
-}
+  let valorTotal = 0;
+  selecionados.forEach(function (item) {
+    const preco = parseFloat(item.dataset.preco) || 0;
+    valorTotal += preco;
+  });
 
-function saveCartToStorage() {
-  try {
-    localStorage.setItem('cardapio_cart', JSON.stringify(cart));
-  } catch (e) {
-    console.error('Erro ao salvar carrinho:', e);
-  }
-}
-
-function addToCart(productId) {
-  const product = PRODUCTS.find(p => p.id === productId);
-  if (!product) return;
-
-  const existingItem = cart.find(item => item.id === productId);
-
-  if (existingItem) {
-    existingItem.quantity += 1;
+  // Atualiza os textos na tela
+  if (totalItens === 0) {
+    contador.textContent = "0 itens no cardápio";
   } else {
-    cart.push({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      icon: product.icon,
-      quantity: 1
-    });
+    contador.textContent = qtdSelecionados + " de " + totalItens + " selecionados";
   }
 
-  saveCartToStorage();
-  updateCartUI();
-  showToast(`${product.name} adicionado ao pedido!`, '🛒');
+  totalPedido.textContent = "Total: " + formatarMoeda(valorTotal);
 }
 
-function updateItemQuantity(productId, delta) {
-  const itemIndex = cart.findIndex(item => item.id === productId);
-  if (itemIndex === -1) return;
+// Cria um elemento <li> na lista do cardápio
+function criarItemCardapio(nome, preco, jaSelecionado = false) {
+  const item = document.createElement("li");
+  item.dataset.preco = preco;
+  if (jaSelecionado) item.classList.add("selecionado");
 
-  cart[itemIndex].quantity += delta;
+  // Div com texto, check e preço
+  const info = document.createElement("div");
+  info.className = "item-info";
 
-  if (cart[itemIndex].quantity <= 0) {
-    cart.splice(itemIndex, 1);
-    showToast('Item removido do pedido', '🗑️');
-  }
+  const check = document.createElement("span");
+  check.className = "item-check";
+  check.textContent = jaSelecionado ? "✅" : "⚪";
 
-  saveCartToStorage();
-  updateCartUI();
-}
+  const nomeEl = document.createElement("span");
+  nomeEl.className = "item-nome";
+  nomeEl.textContent = nome;
 
-function removeItemFromCart(productId) {
-  cart = cart.filter(item => item.id !== productId);
-  saveCartToStorage();
-  updateCartUI();
-  showToast('Item removido do pedido', '🗑️');
-}
+  const precoEl = document.createElement("span");
+  precoEl.className = "item-preco";
+  precoEl.textContent = formatarMoeda(preco);
 
-function clearCart() {
-  if (cart.length === 0) return;
-  cart = [];
-  saveCartToStorage();
-  updateCartUI();
-  showToast('Carrinho esvaziado com sucesso', '🧹');
-}
+  info.appendChild(check);
+  info.appendChild(nomeEl);
+  info.appendChild(precoEl);
+  item.appendChild(info);
 
-function getCartTotals() {
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  return { totalItems, subtotal, total: subtotal };
-}
-
-// ==========================================================================
-// 6. RENDERIZAÇÃO DA INTERFACE (UI)
-// ==========================================================================
-function renderCategories() {
-  if (!categoriesContainer) return;
-
-  categoriesContainer.innerHTML = CATEGORIES.map(cat => `
-    <button 
-      class="category-tab ${cat.id === currentCategory ? 'active' : ''}" 
-      data-category="${cat.id}"
-      aria-label="Categoria ${cat.name}"
-    >
-      <span>${cat.icon}</span>
-      <span>${cat.name}</span>
-    </button>
-  `).join('');
-
-  categoriesContainer.querySelectorAll('.category-tab').forEach(btn => {
-    btn.addEventListener('click', () => {
-      currentCategory = btn.dataset.category;
-      renderCategories();
-      renderProducts();
-    });
-  });
-}
-
-function renderProducts() {
-  if (!productsGrid) return;
-
-  const filtered = PRODUCTS.filter(product => {
-    const matchCategory = currentCategory === 'todos' || product.category === currentCategory;
-    const matchSearch = searchQuery === '' || 
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchCategory && matchSearch;
+  // NÍVEL 1: Clicar para selecionar ou desmarcar do pedido
+  item.addEventListener("click", function () {
+    item.classList.toggle("selecionado");
+    const isChecked = item.classList.contains("selecionado");
+    check.textContent = isChecked ? "✅" : "⚪";
+    atualizarContador();
   });
 
-  const currentCatObj = CATEGORIES.find(c => c.id === currentCategory);
-  if (currentCategoryTitle) {
-    currentCategoryTitle.textContent = currentCategory === 'todos' 
-      ? (searchQuery ? `Resultados para "${searchQuery}"` : 'Todos os Itens') 
-      : `${currentCatObj.icon} ${currentCatObj.name}`;
-  }
+  // NÍVEL 2: Botão de apagar (✕) do cardápio
+  const btnApagar = document.createElement("button");
+  btnApagar.textContent = "✕";
+  btnApagar.className = "btn-apagar";
+  btnApagar.title = "Remover do cardápio";
 
-  if (itemsCountBadge) {
-    itemsCountBadge.textContent = `${filtered.length} ${filtered.length === 1 ? 'item' : 'itens'}`;
-  }
+  btnApagar.addEventListener("click", function (event) {
+    event.stopPropagation();
+    item.remove();
+    atualizarContador();
+  });
 
-  if (filtered.length === 0) {
-    productsGrid.innerHTML = '';
-    if (emptyState) emptyState.style.display = 'block';
+  item.appendChild(btnApagar);
+  lista.appendChild(item);
+
+  atualizarContador();
+}
+
+// Função para adicionar novo item digitado
+function adicionarItem() {
+  const texto = campo.value.trim();
+  const precoValor = parseFloat(campoPreco.value);
+
+  if (texto === "") {
+    alert("Por favor, digite o nome do item!");
+    campo.focus();
     return;
   }
 
-  if (emptyState) emptyState.style.display = 'none';
+  if (isNaN(precoValor) || precoValor < 0) {
+    alert("Por favor, digite um preço válido!");
+    campoPreco.focus();
+    return;
+  }
 
-  productsGrid.innerHTML = filtered.map(product => `
-    <article class="product-card" data-id="${product.id}">
-      <div class="product-top">
-        <div class="product-icon">${product.icon}</div>
-        <div class="product-details">
-          <div class="product-header-row">
-            <h3 class="product-title">${product.name}</h3>
-            ${product.tag ? `<span class="product-tag">${product.tag}</span>` : ''}
-          </div>
-          <p class="product-desc">${product.description}</p>
-        </div>
-      </div>
-      <div class="product-bottom">
-        <span class="product-price">${formatPrice(product.price)}</span>
-        <button class="btn-add-item" onclick="addToCart(${product.id})" aria-label="Adicionar ${product.name} ao pedido">
-          <span>+ Adicionar</span>
-        </button>
-      </div>
-    </article>
-  `).join('');
+  criarItemCardapio(texto, precoValor, false);
+
+  campo.value = "";
+  campoPreco.value = "";
+  campo.focus();
 }
 
-function updateCartUI() {
-  const { totalItems, total } = getCartTotals();
+// Clique no botão Adicionar
+botao.addEventListener("click", adicionarItem);
 
-  // 1. Atualizar Botão Flutuante
-  if (cartBadgeCount) cartBadgeCount.textContent = totalItems;
-  if (cartBadgeSummary) {
-    cartBadgeSummary.textContent = totalItems === 0 
-      ? 'Nenhum item adicionado' 
-      : `${totalItems} ${totalItems === 1 ? 'item selecionado' : 'itens selecionados'}`;
-  }
-  if (cartBadgeTotal) cartBadgeTotal.textContent = formatPrice(total);
-
-  // 2. Atualizar Lista dentro do Dialog
-  if (cartItemsList) {
-    if (cart.length === 0) {
-      cartItemsList.innerHTML = '';
-      if (cartEmptyView) cartEmptyView.style.display = 'block';
-      if (orderForm) orderForm.style.display = 'none';
-      if (cartFooter) cartFooter.style.display = 'none';
+// NÍVEL 4 (Extra 1): Pressionar "Enter" nos campos para adicionar
+campo.addEventListener("keyup", function (event) {
+  if (event.key === "Enter") {
+    if (campoPreco.value === "") {
+      campoPreco.focus();
     } else {
-      if (cartEmptyView) cartEmptyView.style.display = 'none';
-      if (orderForm) orderForm.style.display = 'block';
-      if (cartFooter) cartFooter.style.display = 'block';
-
-      cartItemsList.innerHTML = cart.map(item => `
-        <div class="cart-item-row" data-id="${item.id}">
-          <div class="cart-item-info">
-            <div class="cart-item-name">${item.icon} ${item.name}</div>
-            <div class="cart-item-unit-price">${formatPrice(item.price)} cada</div>
-          </div>
-          <div class="cart-item-controls">
-            <button class="qty-btn" onclick="updateItemQuantity(${item.id}, -1)" title="Diminuir quantidade" aria-label="Diminuir">-</button>
-            <span class="qty-val">${item.quantity}</span>
-            <button class="qty-btn" onclick="updateItemQuantity(${item.id}, 1)" title="Aumentar quantidade" aria-label="Aumentar">+</button>
-          </div>
-          <div class="cart-item-subtotal">${formatPrice(item.price * item.quantity)}</div>
-          <button class="cart-item-remove-btn" onclick="removeItemFromCart(${item.id})" title="Remover item" aria-label="Remover">✕</button>
-        </div>
-      `).join('');
+      adicionarItem();
     }
   }
-
-  // 3. Atualizar Totais do Rodapé do Modal
-  if (summarySubtotal) summarySubtotal.textContent = formatPrice(total);
-  if (summaryTotal) summaryTotal.textContent = formatPrice(total);
-}
-
-// ==========================================================================
-// 7. DIALOGS & FLUXO DE PEDIDO
-// ==========================================================================
-function openCart() {
-  updateCartUI();
-  if (cartDialog && typeof cartDialog.showModal === 'function') {
-    cartDialog.showModal();
-  }
-}
-
-function closeCart() {
-  if (cartDialog) cartDialog.close();
-}
-
-function handleOrderTypeChange() {
-  const type = orderTypeSelect.value;
-  if (type === 'mesa') {
-    locationLabel.textContent = 'Número da Mesa *';
-    customerLocationInput.placeholder = 'Ex: Mesa 04';
-    customerLocationInput.required = true;
-  } else if (type === 'delivery') {
-    locationLabel.textContent = 'Endereço Completo de Entrega *';
-    customerLocationInput.placeholder = 'Ex: Rua das Flores, 123 - Apto 402 - Bairro';
-    customerLocationInput.required = true;
-  } else {
-    locationLabel.textContent = 'Ponto de Retirada';
-    customerLocationInput.placeholder = 'Balcão Principal';
-    customerLocationInput.required = false;
-  }
-}
-
-function handleOrderSubmit() {
-  if (cart.length === 0) {
-    showToast('Adicione pelo menos um item ao pedido!', '⚠️');
-    return;
-  }
-
-  const name = customerNameInput.value.trim();
-  const orderType = orderTypeSelect.options[orderTypeSelect.selectedIndex].text;
-  const location = customerLocationInput.value.trim();
-  const payment = paymentMethodSelect.value;
-  const notes = orderNotesInput.value.trim();
-
-  if (!name) {
-    showToast('Por favor, informe seu nome.', '⚠️');
-    customerNameInput.focus();
-    return;
-  }
-
-  if (orderTypeSelect.value !== 'retirada' && !location) {
-    showToast('Por favor, preencha o número da mesa ou endereço.', '⚠️');
-    customerLocationInput.focus();
-    return;
-  }
-
-  const { total } = getCartTotals();
-  const dateStr = new Date().toLocaleString('pt-BR');
-
-  let receipt = `====================================\n`;
-  receipt += `🍽️ SABOR & ARTE GOURMET\n`;
-  receipt += `Data: ${dateStr}\n`;
-  receipt += `====================================\n\n`;
-  receipt += `👤 CLIENTE: ${name}\n`;
-  receipt += `📍 TIPO: ${orderType} ${location ? `(${location})` : ''}\n`;
-  receipt += `💳 PAGAMENTO: ${payment}\n\n`;
-  receipt += `📝 ITENS DO PEDIDO:\n`;
-  receipt += `------------------------------------\n`;
-
-  cart.forEach(item => {
-    receipt += `${item.quantity}x ${item.name} - ${formatPrice(item.price * item.quantity)}\n`;
-  });
-
-  receipt += `------------------------------------\n`;
-  receipt += `💰 TOTAL: ${formatPrice(total)}\n`;
-  receipt += `====================================\n`;
-
-  if (notes) {
-    receipt += `\n🗒️ OBSERVAÇÕES:\n${notes}\n`;
-  }
-
-  lastCompletedOrderText = receipt;
-
-  closeCart();
-  if (orderReceiptPreview) {
-    orderReceiptPreview.textContent = receipt;
-  }
-
-  if (successDialog && typeof successDialog.showModal === 'function') {
-    successDialog.showModal();
-  }
-
-  clearCart();
-}
-
-function sendOrderToWhatsApp() {
-  if (!lastCompletedOrderText) return;
-  const encoded = encodeURIComponent(lastCompletedOrderText);
-  window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
-}
-
-function copyOrderReceipt() {
-  if (!lastCompletedOrderText) return;
-  navigator.clipboard.writeText(lastCompletedOrderText)
-    .then(() => showToast('Resumo copiado para a área de transferência!', '📋'))
-    .catch(() => showToast('Não foi possível copiar o texto', '❌'));
-}
-
-// ==========================================================================
-// 8. CONFIGURAÇÃO DE EVENTOS E INICIALIZAÇÃO
-// ==========================================================================
-function setupEventListeners() {
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      searchQuery = e.target.value.trim();
-      if (clearSearchBtn) {
-        clearSearchBtn.style.display = searchQuery ? 'flex' : 'none';
-      }
-      renderProducts();
-    });
-  }
-
-  if (clearSearchBtn) {
-    clearSearchBtn.addEventListener('click', () => {
-      searchInput.value = '';
-      searchQuery = '';
-      clearSearchBtn.style.display = 'none';
-      renderProducts();
-      searchInput.focus();
-    });
-  }
-
-  if (resetFiltersBtn) {
-    resetFiltersBtn.addEventListener('click', () => {
-      currentCategory = 'todos';
-      searchQuery = '';
-      if (searchInput) searchInput.value = '';
-      if (clearSearchBtn) clearSearchBtn.style.display = 'none';
-      renderCategories();
-      renderProducts();
-    });
-  }
-
-  if (openCartBtn) openCartBtn.addEventListener('click', openCart);
-  if (closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
-  if (clearCartBtn) clearCartBtn.addEventListener('click', clearCart);
-  if (submitOrderBtn) submitOrderBtn.addEventListener('click', handleOrderSubmit);
-  if (backToMenuBtn) backToMenuBtn.addEventListener('click', closeCart);
-
-  if (orderTypeSelect) {
-    orderTypeSelect.addEventListener('change', handleOrderTypeChange);
-  }
-
-  if (whatsappSendBtn) whatsappSendBtn.addEventListener('click', sendOrderToWhatsApp);
-  if (copyOrderBtn) copyOrderBtn.addEventListener('click', copyOrderReceipt);
-  if (newOrderBtn) {
-    newOrderBtn.addEventListener('click', () => {
-      if (successDialog) successDialog.close();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
-
-  [cartDialog, successDialog].forEach(dialog => {
-    if (!dialog) return;
-    dialog.addEventListener('click', (event) => {
-      const rect = dialog.getBoundingClientRect();
-      const isInDialog = (
-        rect.top <= event.clientY &&
-        event.clientY <= rect.top + rect.height &&
-        rect.left <= event.clientX &&
-        event.clientX <= rect.left + rect.width
-      );
-      if (!isInDialog) {
-        dialog.close();
-      }
-    });
-  });
-}
-
-// Exposição global
-window.addToCart = addToCart;
-window.updateItemQuantity = updateItemQuantity;
-window.removeItemFromCart = removeItemFromCart;
-
-document.addEventListener('DOMContentLoaded', () => {
-  renderCategories();
-  renderProducts();
-  updateCartUI();
-  setupEventListeners();
 });
+
+campoPreco.addEventListener("keyup", function (event) {
+  if (event.key === "Enter") {
+    adicionarItem();
+  }
+});
+
+// NÍVEL 4 (Extra 2): Botão "Limpar Selecionados" (desmarca os itens do pedido)
+btnLimpar.addEventListener("click", function () {
+  const selecionados = document.querySelectorAll("#lista li.selecionado");
+  selecionados.forEach(function (item) {
+    item.classList.remove("selecionado");
+    const check = item.querySelector(".item-check");
+    if (check) check.textContent = "⚪";
+  });
+  atualizarContador();
+});
+
+// NÍVEL 4 (Extra 3): Botão "Enviar Pedido via WhatsApp"
+btnPedir.addEventListener("click", function () {
+  const selecionados = document.querySelectorAll("#lista li.selecionado");
+  if (selecionados.length === 0) {
+    alert("Selecione pelo menos um item para fazer seu pedido!");
+    return;
+  }
+
+  let mensagem = "*NOVO PEDIDO - CARDÁPIO*\n\n";
+  let total = 0;
+
+  selecionados.forEach(function (item) {
+    const nome = item.querySelector(".item-nome").textContent;
+    const preco = parseFloat(item.dataset.preco) || 0;
+    total += preco;
+    mensagem += "• " + nome + " (" + formatarMoeda(preco) + ")\n";
+  });
+
+  mensagem += "\n*Total do Pedido:* " + formatarMoeda(total);
+
+  const url = "https://api.whatsapp.com/send?text=" + encodeURIComponent(mensagem);
+  window.open(url, "_blank");
+});
+
+// ITENS PADRÃO INICIAIS DO CARDÁPIO
+const itensIniciais = [
+  { nome: "🍔 X-Burger Especial", preco: 25.00 },
+  { nome: "🥓 X-Bacon Artesanal", preco: 29.90 },
+  { nome: "🍟 Batata Frita Grande", preco: 16.00 },
+  { nome: "🥤 Refrigerante Lata 350ml", preco: 6.50 },
+  { nome: "🍨 Sobremesa Brownie", preco: 14.00 }
+];
+
+// Carrega os itens iniciais na tela
+itensIniciais.forEach(function (it) {
+  criarItemCardapio(it.nome, it.preco, false);
+});
+

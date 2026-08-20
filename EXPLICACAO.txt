@@ -1,60 +1,61 @@
-﻿==========================================================================
-TRABALHO ACADÊMICO: PWA - CARDÁPIO & PEDIDOS ONLINE (AULA 03)
+==========================================================================
+TRABALHO ACADÊMICO: PWA - CARDÁPIO & PEDIDOS (AULA 03)
 INSTITUIÇÃO: FANESE · Faculdade de Administração, Negócios e Saúde de Sergipe
 DISCIPLINA: Programação para Dispositivos Móveis
 PROFESSOR: Márcio Rodrigo
 ALUNO: Pedro Joaquim
 ==========================================================================
 
-1. PERGUNTAS TEÓRICAS DA AULA 03 (RESPOSTAS COM MINHAS PALAVRAS)
+1. NÍVEIS CONCLUÍDOS NO PROJETO
 
-Q1: O que é um Service Worker (com minhas palavras)?
-R: O Service Worker é um script JavaScript especial (sw.js) que roda em segundo 
-   plano no navegador, separado da página web visual. Ele funciona como um 
-   "intermediário" (ou proxy) entre o aplicativo e a internet, interceptando 
-   todas as requisições de arquivos. É ele quem permite que o app funcione 
-   mesmo sem conexão com a internet (offline) e torna o app instalável no celular 
-   ou computador como uma PWA.
-
-Q2: O que é a estratégia "Cache Primeiro" (Cache First)?
-R: É a regra de busca de arquivos onde o Service Worker primeiro verifica se 
-   o arquivo solicitado (HTML, CSS, JS, imagens) já está salvo na memória local 
-   do navegador (Cache Storage). 
-   - Se o arquivo for encontrado no cache, ele é entregue instantaneamente (rápido e offline).
-   - Se NÃO for encontrado no cache, aí sim ele faz a requisição pela internet (rede).
-   Essa estratégia é ideal para os arquivos essenciais do aplicativo que não mudam a toda hora.
+ Nível 1: Selecionar e desmarcar item do pedido (com feedback visual ✅)
+ Nível 2: Botão para apagar item do cardápio (✕)
+ Nível 3: Contador de itens selecionados e cálculo automático do Total (R$)
+ Nível 4: Toques pessoais (Campo de Preço R$, Tecla Enter, Limpar Selecionados e Enviar para WhatsApp)
 
 
-2. AS 3 PEÇAS DA PWA NO PROJETO
+2. COMO O CÓDIGO FUNCIONA
 
-1. O Site / Aplicação (index.html, style.css, app.js):
-   - Sistema de cardápio digital com filtros de categorias (Lanches, Porções, Bebidas, Sobremesas).
-   - Busca em tempo real e adição ao carrinho com controle de quantidade.
-   - Cálculo automático de totais, formulário de atendimento e envio para WhatsApp.
+ Nível 1 - Selecionar Item para o Pedido:
+ Coloquei um ouvinte de clique em cada item (li). Ao clicar, o JavaScript usa 
+ 'classList.toggle("selecionado")', alternando o ícone entre "⚪" e "✅" e 
+ atualizando o total do pedido.
 
-2. O Manifest (manifest.json):
-   - Configuração de identidade do aplicativo com nome, ícones de 192px e 512px, 
-     display "standalone" (abre em tela cheia sem barra do navegador) e cores de tema.
+ Nível 2 - Apagar Item:
+ Criei o botão "✕" dentro de cada li. Para apagar, usei 'item.remove()'.
+ Também adicionei o 'event.stopPropagation()' no botão para evitar que 
+ o clique de apagar marque ou desmarque o item ao mesmo tempo.
 
-3. O Service Worker (sw.js):
-   - Evento "install": Guarda todos os arquivos estáticos no cache (cardapio-tarefas-v1).
-   - Evento "activate": Remove versões antigas de caches para manter o app atualizado.
-   - Evento "fetch": Implementa a estratégia Cache Primeiro para rodar offline.
+ Nível 3 - Contador e Cálculo do Total:
+ A função 'atualizarContador()' conta o número total de itens do cardápio, 
+ quantos estão selecionados (querySelectorAll("#lista li.selecionado")) e soma 
+ os preços (armazenados em data-preco), formatando e exibindo o Total em Reais (R$).
+
+ Nível 4 - Toques Pessoais:
+ - Campo de Preço: Permite cadastrar novos itens com nome e valor numérico.
+ - Pressionar "Enter" para cadastrar automaticamente.
+ - Botão "Limpar Selecionados": Desmarca todos os itens do pedido com um clique.
+ - Botão "Enviar Pedido via WhatsApp": Monta a mensagem formatada com os itens 
+   escolhidos e o total a pagar e abre o WhatsApp diretamente.
 
 
-3. TESTES E CASOS DE USO REALIZADOS (DEVTOOLS)
+3. RESPOSTAS TEÓRICAS DA AULA 03 (PWA E SERVICE WORKER)
 
-1. Servidor Local (Live Server):
-   - O projeto foi executado via Live Server no endereço seguro http://127.0.0.1:5500.
+ Q1: O que é um Service Worker (com minhas palavras)?
+ R: O Service Worker é um arquivo JavaScript (sw.js) que o navegador roda em segundo 
+    plano, separado da página web. Ele funciona interceptando os pedidos de arquivos, 
+    permitindo guardar cópias em cache para que o app funcione sem internet (offline) 
+    e seja instalado no dispositivo como um app nativo.
 
-2. Ativação do Service Worker:
-   - Verificado em DevTools (F12) > Application > Service Workers: 
-     Status: "activated and running" com a mensagem no Console "Service Worker registrado! ✅".
+ Q2: O que é a estratégia "Cache Primeiro"?
+ R: É a regra onde o Service Worker primeiro busca o arquivo solicitado no Cache Storage. 
+    Se achar, entrega imediatamente (rápido e offline); se não achar, busca na rede.
 
-3. Teste Sem Internet (Offline):
-   - Em DevTools > Network, a conexão foi alterada de "No throttling" para "Offline".
-   - Ao recarregar a página (F5), o cardápio continuou abrindo normalmente direto do Cache Storage.
 
-4. Instalação da PWA:
-   - O navegador habilitou o ícone de instalação (⊕) na barra de endereços, permitindo 
-     abrir a aplicação em janela própria como um aplicativo nativo.
+4. TESTES REALIZADOS
+
+ - App rodando no Live Server em http://127.0.0.1:5500.
+ - Service Worker verificado no DevTools > Application > Service Workers ("activated and running").
+ - Teste offline realizado com sucesso em DevTools > Network > Offline.
+ - Botão de instalar testado no navegador (PWA).
+
