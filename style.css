@@ -1,0 +1,120 @@
+* { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, sans-serif; 
+}
+
+body { 
+  background: #f1f7f7; 
+  color: #06282b; 
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+header h1 { 
+  text-align: center; 
+  margin-bottom: 20px; 
+  color: #003f43;
+}
+
+.nova-tarefa { 
+  display: flex; 
+  gap: 8px; 
+  margin-bottom: 16px; 
+}
+
+#campo { 
+  flex: 1; 
+  padding: 12px; 
+  border: 1px solid #cfe2e2;
+  border-radius: 10px; 
+  font-size: 16px; 
+  outline: none;
+}
+
+#campo:focus {
+  border-color: #1c96a0;
+}
+
+#botao { 
+  padding: 12px 16px; 
+  border: none; 
+  border-radius: 10px;
+  background: #1c96a0; 
+  color: #fff; 
+  font-size: 16px; 
+  font-weight: bold;
+  cursor: pointer; 
+  transition: background 0.2s;
+}
+
+#botao:hover {
+  background: #0e7a80;
+}
+
+.contador-container {
+  font-size: 14px;
+  color: #3c5c5f;
+  margin-bottom: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+#lista { 
+  list-style: none; 
+}
+
+#lista li { 
+  background: #fff; 
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,63,67,0.08);
+  cursor: pointer;
+  user-select: none;
+}
+
+#lista li.concluida span {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.btn-apagar {
+  background: transparent;
+  border: none;
+  color: #e85f30;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.btn-apagar:hover {
+  background: #ffe7de;
+}
+
+/* NÍVEL 4: Botão de Limpar Concluídas */
+.btn-limpar {
+  display: block;
+  width: 100%;
+  margin-top: 15px;
+  padding: 10px;
+  background: #ffe7de;
+  color: #e85f30;
+  border: 1px solid #ffd2c3;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-limpar:hover {
+  background: #ffd2c3;
+}

@@ -1,0 +1,43 @@
+    MINHAS TAREFAS 
+
+
+1. NÍVEIS CONCLUÍDOS
+
+ Nível 1: Marcar e desmarcar tarefa concluída
+ Nível 2: Botão para apagar tarefa
+ Nível 3: Contador de tarefas concluídas
+ Nível 4: Toque pessoal
+
+
+2 COMO O CÓDIGO FUNCIONA
+
+ Nível 1 - Concluir Tarefa:
+Coloquei um ouvinte de clique em cada item (li). Quando clico, 
+o JavaScript usa 'classList.toggle("concluida")'. Se a tarefa 
+já estiver riscada, ele desmarca; se não estiver, ele risca.
+
+ Nível 2 - Apagar Tarefa:
+  Criei o botão "✕" dentro de cada li. Para apagar, usei 'item.remove()'.
+  Também adicionei o 'event.stopPropagation()' no botão para evitar que 
+  o clique de apagar marque a tarefa como concluída ao mesmo tempo.
+
+ Nível 3 - Contador:
+  Criei a função 'atualizarContador()'. Ela conta o número total de itens
+  e quantos têm a classe 'concluida' (usando querySelectorAll), mostrando 
+  na tela no formato "X de Y concluídas".
+
+
+3 SEU TOQUE PESSOAL (NÍVEL 4)
+
+- Adicionei o botão "Limpar concluídas". Quando o usuário clica nele, o 
+  JavaScript busca todas as tarefas com a classe 'concluida' e remove todas
+  de uma só vez, atualizando o contador em seguida.
+- Também permiti adicionar tarefas apertando a tecla "Enter".
+
+
+4 TESTES REALIZADOS
+
+Adicionei várias tarefas usando a tecla Enter e o botão.
+Marquei e desmarquei tarefas para ver o texto riscando e o contador mudar.
+Testei apagar uma por uma no "✕".
+Testei o botão "Limpar concluídas" para apagar todas as feitas juntas.
