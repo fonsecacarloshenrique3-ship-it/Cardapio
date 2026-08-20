@@ -1,43 +1,42 @@
-    MINHAS TAREFAS 
+====================================================
+🍽️ CARDÁPIO DIGITAL INTERATIVO COM PEDIDOS
+====================================================
+
+1. FUNCIONALIDADES PRINCIPAIS
+
+ - Catálogo com Categorias:
+   Navegação dinâmica por abas (Todos, Combos, Lanches, Porções, Bebidas, Sobremesas).
+ 
+ - Busca em Tempo Real:
+   Filtro instantâneo por nome ou ingredientes do produto com botão de limpar.
+
+ - Seleção e Carrinho Inteligente:
+   Adição rápida de itens com botão "+ Adicionar", controle de quantidade (+ / -), 
+   remoção e esvaziamento completo do carrinho.
+
+ - Cálculo Automático do Total:
+   Atualização imediata do subtotal, quantidade de itens e valor total a pagar (R$).
+
+ - Formulário de Atendimento e Checkout:
+   Suporte a Consumo no Local (com número da mesa), Entrega (com endereço) 
+   e Retirada no balcão, seleção de forma de pagamento (PIX, Cartão, Dinheiro) 
+   e campo de observações para a cozinha.
+
+ - Envio para WhatsApp e Cópia do Pedido:
+   Gera automaticamente um resumo detalhado e estruturado para enviar direto 
+   para o WhatsApp do restaurante ou copiar para a área de transferência.
+
+ - Persistência:
+   Itens do carrinho salvos no LocalStorage para não perder pedidos se recarregar a página.
+
+ - Design Responsivo & PWA:
+   Otimizado para celulares e computadores com barra flutuante de acesso rápido ao pedido.
 
 
-1. NÍVEIS CONCLUÍDOS
+2. ESTRUTURA DOS ARQUIVOS
 
- Nível 1: Marcar e desmarcar tarefa concluída
- Nível 2: Botão para apagar tarefa
- Nível 3: Contador de tarefas concluídas
- Nível 4: Toque pessoal
-
-
-2 COMO O CÓDIGO FUNCIONA
-
- Nível 1 - Concluir Tarefa:
-Coloquei um ouvinte de clique em cada item (li). Quando clico, 
-o JavaScript usa 'classList.toggle("concluida")'. Se a tarefa 
-já estiver riscada, ele desmarca; se não estiver, ele risca.
-
- Nível 2 - Apagar Tarefa:
-  Criei o botão "✕" dentro de cada li. Para apagar, usei 'item.remove()'.
-  Também adicionei o 'event.stopPropagation()' no botão para evitar que 
-  o clique de apagar marque a tarefa como concluída ao mesmo tempo.
-
- Nível 3 - Contador:
-  Criei a função 'atualizarContador()'. Ela conta o número total de itens
-  e quantos têm a classe 'concluida' (usando querySelectorAll), mostrando 
-  na tela no formato "X de Y concluídas".
-
-
-3 SEU TOQUE PESSOAL (NÍVEL 4)
-
-- Adicionei o botão "Limpar concluídas". Quando o usuário clica nele, o 
-  JavaScript busca todas as tarefas com a classe 'concluida' e remove todas
-  de uma só vez, atualizando o contador em seguida.
-- Também permiti adicionar tarefas apertando a tecla "Enter".
-
-
-4 TESTES REALIZADOS
-
-Adicionei várias tarefas usando a tecla Enter e o botão.
-Marquei e desmarquei tarefas para ver o texto riscando e o contador mudar.
-Testei apagar uma por uma no "✕".
-Testei o botão "Limpar concluídas" para apagar todas as feitas juntas.
+ - index.html: Estrutura semântica com modais nativos (<dialog>) e navegação por categorias.
+ - style.css: Design moderno, responsivo, tipografia Google Fonts (Plus Jakarta Sans) e animações suaves.
+ - app.js: Lógica do catálogo, gerenciamento do estado do carrinho, filtros e checkout.
+ - manifest.json: Configuração PWA para instalação no smartphone.
+ - icons/: Ícones do aplicativo.
