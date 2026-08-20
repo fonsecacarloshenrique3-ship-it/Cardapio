@@ -5,9 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cardápio Online - Trabalho de Programação Web</title>
 
-  <!-- Estilos e Ícones -->
-  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-192.png">
+  <!-- PWA: Manifest e Meta Tags -->
   <link rel="manifest" href="manifest.json">
+  <meta name="description" content="Cardápio digital interativo para seleção e envio de pedidos online.">
+  <meta name="theme-color" content="#d9534f">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-title" content="Cardápio">
+
+  <!-- Folha de Estilos -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -151,13 +158,23 @@
 
   <!-- Rodapé Acadêmico -->
   <footer class="rodape">
-    <p>Projeto de Extensão / Acadêmico • Criado com HTML5, CSS3 e JavaScript Puro</p>
+    <p>Projeto de Extensão / Acadêmico • Criado com HTML5, CSS3 e JavaScript Puro (PWA)</p>
   </footer>
 
   <!-- Notificação Toast Simples -->
   <div id="aviso-toast" class="aviso-toast"></div>
 
-  <!-- Script Principal -->
+  <!-- Script Principal da Aplicação -->
   <script src="app.js"></script>
+
+  <!-- Script de Registro do Service Worker (Aula 03) -->
+  <script>
+    // Registra o Service Worker (se o navegador suportar)
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js")
+        .then(function () { console.log("Service Worker registrado! ✅"); })
+        .catch(function (erro) { console.log("Falha ao registrar Service Worker:", erro); });
+    }
+  </script>
 </body>
 </html>
