@@ -3,59 +3,237 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cardápio & Pedidos</title>
+  <title>Sabor & Arte Gourmet | Cardápio Digital Profissional</title>
 
-  <meta name="description" content="Cardápio digital simples para seleção de pedidos com cálculo de preço.">
-  <meta name="theme-color" content="#1c96a0">
+  <meta name="description" content="Cardápio digital empresarial interativo para pedidos rápidos, visualização de produtos e cálculo de total.">
+  <meta name="theme-color" content="#b91c1c">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Cardápio">
+  <meta name="apple-mobile-web-app-title" content="Cardápio Pro">
 
   <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-192.png">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="manifest" href="manifest.json">
 
+  <!-- Tipografia Profissional -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>🍔 Cardápio & Pedidos</h1>
-    <p class="subtitulo">Clique nos itens para selecionar seu pedido</p>
+
+  <!-- CABEÇALHO EMPRESARIAL -->
+  <header class="header-empresa">
+    <div class="header-container">
+      <div class="brand-box">
+        <div class="brand-logo">🍔</div>
+        <div class="brand-texts">
+          <h1 class="brand-name">Sabor & Arte Gourmet</h1>
+          <p class="brand-segment">Restaurante & Hamburgueria Artesanal</p>
+        </div>
+      </div>
+
+      <div class="status-box">
+        <span class="status-pulse"></span>
+        <span class="status-label">Aberto para Pedidos</span>
+      </div>
+    </div>
   </header>
 
-  <main>
-    <!-- Adicionar Novo Item com Preço -->
-    <div class="novo-item">
-      <input id="campo" type="text" placeholder="Nome do item (ex: X-Burger)">
-      <input id="campo-preco" type="number" step="0.50" min="0" placeholder="R$ Preço">
-      <button id="botao">Adicionar</button>
-    </div>
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="app-container">
 
-    <!-- Contador e Total do Pedido -->
-    <div class="resumo-container">
-      <p id="contador">0 itens selecionados</p>
-      <p id="total-pedido" class="total-destaque">Total: R$ 0,00</p>
-    </div>
+    <!-- BARRA DE CONTROLE: PESQUISA E CADASTRO RÁPIDO -->
+    <section class="controls-section">
+      <div class="search-bar-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="campo-busca" placeholder="Buscar no cardápio (ex: burger, batata, coca)..." autocomplete="off">
+        <button id="btn-limpar-busca" class="btn-clear" style="display: none;" title="Limpar pesquisa">✕</button>
+      </div>
 
-    <!-- Lista de Itens do Cardápio -->
-    <ul id="lista"></ul>
+      <!-- BOTÃO PARA ABRIR CADASTRO DE NOVO ITEM -->
+      <details class="accordion-cadastro">
+        <summary class="summary-btn">
+          <span>➕ Cadastrar Novo Item no Cardápio</span>
+          <span class="accordion-arrow">▼</span>
+        </summary>
+        <div class="form-cadastro-item">
+          <div class="form-grid">
+            <input id="novo-nome" type="text" placeholder="Nome do produto (ex: X-Bacon)" required>
+            <select id="nova-categoria">
+              <option value="lanches">🍔 Lanches</option>
+              <option value="porcoes">🍟 Porções</option>
+              <option value="bebidas">🥤 Bebidas</option>
+              <option value="sobremesas">🍰 Sobremesas</option>
+            </select>
+            <input id="novo-preco" type="number" step="0.50" min="0" placeholder="Preço R$ (ex: 29.90)" required>
+            <input id="nova-descricao" type="text" placeholder="Ingredientes / Descrição breve">
+          </div>
+          <button id="btn-salvar-novo" class="btn-adicionar-produto">Cadastrar Produto</button>
+        </div>
+      </details>
+    </section>
 
-    <!-- Ações: Limpar Seleção e Enviar Pedido -->
-    <div class="botoes-acao">
-      <button id="btn-limpar" class="btn-limpar">Limpar Selecionados</button>
-      <button id="btn-pedir" class="btn-pedir">📲 Enviar Pedido via WhatsApp</button>
-    </div>
+    <!-- ABAS DE CATEGORIAS -->
+    <nav class="categorias-nav" aria-label="Categorias do Cardápio">
+      <div class="categorias-lista" id="categorias-tabs">
+        <button class="tab-btn active" data-cat="todos">🍽️ Todos</button>
+        <button class="tab-btn" data-cat="lanches">🍔 Lanches</button>
+        <button class="tab-btn" data-cat="porcoes">🍟 Porções</button>
+        <button class="tab-btn" data-cat="bebidas">🥤 Bebidas</button>
+        <button class="tab-btn" data-cat="sobremesas">🍰 Sobremesas</button>
+      </div>
+    </nav>
+
+    <!-- LISTAGEM DE PRODUTOS DO CARDÁPIO -->
+    <section class="cardapio-section">
+      <div class="section-title-row">
+        <h2 id="titulo-categoria">Todos os Produtos</h2>
+        <span id="badge-total-itens" class="badge-count">0 produtos</span>
+      </div>
+
+      <div class="grid-produtos" id="grid-produtos">
+        <!-- Renderizado dinamicamente via JS -->
+      </div>
+
+      <!-- MENSAGEM QUANDO NENHUM ITEM FOR ENCONTRADO -->
+      <div id="vazio-alerta" class="card-vazio" style="display: none;">
+        <span class="vazio-icon">🔍</span>
+        <h3>Nenhum item encontrado</h3>
+        <p>Tente buscar por outro termo ou selecione outra categoria.</p>
+      </div>
+    </section>
+
   </main>
 
-  <!-- Service Worker para PWA (Aula 03) -->
+  <!-- BARRA FLUTUANTE DE RESUMO DO PEDIDO (STICKY) -->
+  <aside class="barra-flutuante" id="barra-flutuante">
+    <div class="barra-container">
+      <div class="barra-info">
+        <div class="carrinho-icone-box">
+          🛒
+          <span class="carrinho-badge" id="carrinho-qtd">0</span>
+        </div>
+        <div class="carrinho-textos">
+          <span class="carrinho-titulo">Seu Pedido</span>
+          <span class="carrinho-detalhe" id="carrinho-resumo-texto">0 itens selecionados</span>
+        </div>
+      </div>
+
+      <div class="barra-acoes">
+        <div class="carrinho-total-box">
+          <span class="total-rotulo">Subtotal</span>
+          <span class="total-valor" id="carrinho-total-valor">R$ 0,00</span>
+        </div>
+        <button id="btn-abrir-pedido" class="btn-finalizar-pedido">
+          <span>Ver Pedido</span>
+          <span class="seta-btn">➔</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MODAL DE FINALIZAÇÃO DO PEDIDO (<dialog>) -->
+  <dialog id="modal-pedido" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-header-title">
+          <span class="modal-icon">🛍️</span>
+          <div>
+            <h3>Conferir Pedido</h3>
+            <p class="modal-sub">Revise os itens e informe seus dados</p>
+          </div>
+        </div>
+        <button id="btn-fechar-modal" class="btn-fechar" aria-label="Fechar">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- LISTA DE ITENS SELECIONADOS NO MODAL -->
+        <div class="pedido-itens-lista" id="pedido-itens-lista">
+          <!-- Injetado via JS -->
+        </div>
+
+        <!-- FORMULÁRIO DE ENTREGA / ATENDIMENTO -->
+        <form id="form-fechamento" class="form-fechamento">
+          <h4 class="form-titulo">Informações do Cliente</h4>
+
+          <div class="input-grupo">
+            <label for="cliente-nome">Nome do Cliente *</label>
+            <input type="text" id="cliente-nome" placeholder="Digite seu nome completo" required>
+          </div>
+
+          <div class="input-grupo">
+            <label for="tipo-atendimento">Tipo de Atendimento *</label>
+            <select id="tipo-atendimento">
+              <option value="Mesa">Consumo no Local (Mesa)</option>
+              <option value="Delivery">Entrega (Delivery)</option>
+              <option value="Balcão">Retirada no Balcão</option>
+            </select>
+          </div>
+
+          <div class="input-grupo" id="grupo-local">
+            <label for="cliente-local" id="rotulo-local">Número da Mesa *</label>
+            <input type="text" id="cliente-local" placeholder="Ex: Mesa 05" required>
+          </div>
+
+          <div class="input-grupo">
+            <label for="forma-pagamento">Forma de Pagamento *</label>
+            <select id="forma-pagamento">
+              <option value="PIX">PIX</option>
+              <option value="Cartão de Crédito">Cartão de Crédito</option>
+              <option value="Cartão de Débito">Cartão de Débito</option>
+              <option value="Dinheiro">Dinheiro</option>
+            </select>
+          </div>
+
+          <div class="input-grupo">
+            <label for="pedido-obs">Observações (opcional)</label>
+            <textarea id="pedido-obs" rows="2" placeholder="Ex: Sem cebola, carne bem passada, troco para R$ 50..."></textarea>
+          </div>
+        </form>
+      </div>
+
+      <!-- RODAPÉ DO MODAL COM TOTAIS E BOTÃO WHATSAPP -->
+      <div class="modal-footer">
+        <div class="resumo-valores">
+          <div class="resumo-linha">
+            <span>Quantidade de Itens:</span>
+            <span id="modal-qtd-total">0</span>
+          </div>
+          <div class="resumo-linha total-destaque-linha">
+            <span>Total a Pagar:</span>
+            <span id="modal-valor-total" class="preco-verde">R$ 0,00</span>
+          </div>
+        </div>
+
+        <div class="botoes-modal">
+          <button type="button" id="btn-limpar-tudo" class="btn-esvaziar">Limpar</button>
+          <button type="button" id="btn-enviar-whatsapp" class="btn-whatsapp-empresa">
+            <span>📲 Enviar Pedido via WhatsApp</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- NOTIFICAÇÃO TOAST -->
+  <div id="toast" class="toast-aviso"></div>
+
+  <!-- SERVICE WORKER (PWA) -->
   <script>
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js")
-        .then(() => console.log("Service Worker registrado com sucesso!"))
-        .catch(err => console.error("Erro ao registrar Service Worker:", err));
+      navigator.serviceWorker.register("sw.js", { updateViaCache: 'none' })
+        .then(reg => {
+          reg.update();
+          console.log("Service Worker ativo!");
+        })
+        .catch(err => console.error("Erro SW:", err));
     }
   </script>
 
   <script src="app.js"></script>
 </body>
-</html>
+</html>
+

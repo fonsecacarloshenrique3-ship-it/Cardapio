@@ -1,14 +1,10 @@
 // ==========================================================================
-// AULA 03 - SERVICE WORKER (PWA)
-// Professor: Márcio Rodrigo · FANESE
-// Aluno: Pedro Joaquim
+// SERVICE WORKER PROFISSIONAL (PWA) - CARDÁPIO & PEDIDOS
 // ==========================================================================
 
-// Nome da "caixa" do cache. Troque para v2, v3... ao mudar os arquivos.
-const CACHE = "cardapio-v2";
+const CACHE_NAME = "cardapio-pro-v3";
 
-// Arquivos que o app precisa para funcionar offline.
-const ARQUIVOS = [
+const ARQUIVOS_ESTATICOS = [
   "./",
   "./index.html",
   "./style.css",
@@ -18,37 +14,66 @@ const ARQUIVOS = [
   "./icons/icon-512.png"
 ];
 
-// 1) INSTALAR: baixa e guarda todos os arquivos no cache.
-self.addEventListener("install", function (evento) {
+// 1. Instalação: Salva arquivos essenciais e força ativação imediata
+self.addEventListener("install", (evento) => {
+  self.skipWaiting();
   evento.waitUntil(
-    caches.open(CACHE).then(function (cache) {
-      console.log("Service Worker: Guardando arquivos no cache...");
-      return cache.addAll(ARQUIVOS);
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log("[SW] Armazenando cache essencial:", CACHE_NAME);
+      return cache.addAll(ARQUIVOS_ESTATICOS);
     })
   );
 });
 
-// 2) ATIVAR: apaga caches de versões antigas.
-self.addEventListener("activate", function (evento) {
+// 2. Ativação: Limpa caches antigos e assume controle das páginas abertas
+self.addEventListener("activate", (evento) => {
   evento.waitUntil(
-    caches.keys().then(function (nomes) {
+    caches.keys().then((chaves) => {
       return Promise.all(
-        nomes.map(function (nome) {
-          if (nome !== CACHE) {
-            console.log("Service Worker: Apagando cache antigo:", nome);
-            return caches.delete(nome);
+        chaves.map((chave) => {
+          if (chave !== CACHE_NAME) {
+            console.log("[SW] Removendo cache obsoleto:", chave);
+            return caches.delete(chave);
           }
         })
       );
+    }).then(() => self.clients.claim())
+  );
+});
+
+// 3. Busca de arquivos (Fetch): Estratégia Network-First para HTML e Stale-While-Revalidate para recursos
+self.addEventListener("fetch", (evento) => {
+  const req = evento.request;
+
+  // Se for navegação (abertura da página HTML), busca rede primeiro para nunca travar versão antiga
+  if (req.mode === "navigate") {
+    evento.respondWith(
+      fetch(req)
+        .then((respostaRede) => {
+          const clone = respostaRede.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, clone));
+          return respostaRede;
+        })
+        .catch(() => caches.match(req) || caches.match("./index.html"))
+    );
+    return;
+  }
+
+  // Para outros arquivos: responde rápido do cache e atualiza em segundo plano
+  evento.respondWith(
+    caches.match(req).then((respostaCache) => {
+      const buscaRede = fetch(req)
+        .then((respostaRede) => {
+          if (respostaRede && respostaRede.status === 200 && respostaRede.type === "basic") {
+            const clone = respostaRede.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, clone));
+          }
+          return respostaRede;
+        })
+        .catch(() => respostaCache);
+
+      return respostaCache || buscaRede;
     })
   );
 });
 
-// 3) BUSCAR (FETCH): responde do cache; se não achar, vai à rede (Cache Primeiro).
-self.addEventListener("fetch", function (evento) {
-  evento.respondWith(
-    caches.match(evento.request).then(function (guardado) {
-      return guardado || fetch(evento.request);
-    })
-  );
-});
