@@ -1,11 +1,11 @@
-﻿// ==========================================================================
+// ==========================================================================
 // AULA 03 - SERVICE WORKER (PWA)
 // Professor: Márcio Rodrigo · FANESE
 // Aluno: Pedro Joaquim
 // ==========================================================================
 
 // Nome da "caixa" do cache. Troque para v2, v3... ao mudar os arquivos.
-const CACHE = "cardapio-tarefas-v1";
+const CACHE = "cardapio-gourmet-v2";
 
 // Arquivos que o app precisa para funcionar offline.
 const ARQUIVOS = [
