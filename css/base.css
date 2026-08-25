@@ -1,0 +1,70 @@
+/* ==========================================================================
+   VIEW LAYER - BASE & DESIGN SYSTEM (src/css/base.css)
+   ========================================================================== */
+:root {
+  --primary: #8b1c1c;
+  --primary-hover: #6e1313;
+  --primary-light: #fef2f2;
+  --primary-glow: rgba(139, 28, 28, 0.15);
+  
+  --secondary: #d97706;
+  --secondary-light: #fffbeb;
+  
+  --success: #059669;
+  --success-light: #ecfdf5;
+  --whatsapp: #25d366;
+  --whatsapp-hover: #1eb854;
+  
+  --dark: #0f172a;
+  --dark-surface: #1e293b;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+  
+  --bg-body: #f8fafc;
+  --bg-card: #ffffff;
+  --border: #e2e8f0;
+  --border-focus: #cbd5e1;
+  
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 4px 12px -2px rgba(15, 23, 42, 0.06), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --shadow-hover: 0 16px 24px -4px rgba(15, 23, 42, 0.1), 0 8px 12px -4px rgba(15, 23, 42, 0.05);
+  --shadow-float: 0 20px 30px -8px rgba(15, 23, 42, 0.28), 0 10px 15px -8px rgba(15, 23, 42, 0.15);
+  
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  
+  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Outfit', system-ui, sans-serif;
+  --transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* RESET E BASE */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-body);
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  line-height: 1.5;
+  padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px));
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px 16px;
+}

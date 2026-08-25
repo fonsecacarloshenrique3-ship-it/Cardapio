@@ -1,5 +1,6 @@
+/* --- base.css --- */
 /* ==========================================================================
-   DESIGN SYSTEM EMPRESARIAL GOURMET - CARDÁPIO DIGITAL PROFISSIONAL
+   VIEW LAYER - BASE & DESIGN SYSTEM (src/css/base.css)
    ========================================================================== */
 :root {
   --primary: #8b1c1c;
@@ -41,9 +42,7 @@
   --transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ==========================================================================
-   RESET E BASE
-   ========================================================================== */
+/* RESET E BASE */
 * {
   margin: 0;
   padding: 0;
@@ -65,9 +64,19 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.app-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px 16px;
+}
+
+
+/* --- components.css --- */
 /* ==========================================================================
-   CABEÇALHO & BANNER GOURMET
+   VIEW LAYER - COMPONENTES (src/css/components.css)
    ========================================================================== */
+
+/* HEADER E BANNER GOURMET */
 .header-empresa {
   position: relative;
   background: var(--dark);
@@ -220,16 +229,7 @@ body {
   border-radius: var(--radius-full);
 }
 
-/* ==========================================================================
-   CONTAINER PRINCIPAL
-   ========================================================================== */
-.app-container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px 16px;
-}
-
-/* CONTROLES (BUSCA E CADASTRO) */
+/* CONTROLES E BUSCA */
 .controls-section {
   margin-bottom: 24px;
   display: flex;
@@ -289,7 +289,7 @@ body {
   color: var(--dark);
 }
 
-/* ACCORDION DE CADASTRO DE PRODUTO */
+/* ACCORDION CADASTRO */
 .accordion-cadastro {
   background: #ffffff;
   border: 1.5px solid var(--border);
@@ -400,9 +400,7 @@ body {
   transform: translateY(-1px);
 }
 
-/* ==========================================================================
-   NAVEGAÇÃO POR CATEGORIAS
-   ========================================================================== */
+/* CATEGORIAS */
 .categorias-nav {
   margin-bottom: 24px;
 }
@@ -446,9 +444,7 @@ body {
   box-shadow: 0 6px 16px var(--primary-glow);
 }
 
-/* ==========================================================================
-   GRID DE PRODUTOS
-   ========================================================================== */
+/* GRID DE PRODUTOS & CARDS */
 .cardapio-section {
   margin-bottom: 30px;
 }
@@ -497,7 +493,6 @@ body {
   }
 }
 
-/* CARD DE PRODUTO GOURMET */
 .card-item {
   background: var(--bg-card);
   border: 1.5px solid var(--border);
@@ -524,7 +519,6 @@ body {
   background: #fffafa;
 }
 
-/* BADGE DE DESTAQUE NO CARD */
 .card-badge-tag {
   position: absolute;
   top: 12px;
@@ -545,7 +539,6 @@ body {
 .card-badge-tag.novo { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
 .card-badge-tag.vegetariano { background: linear-gradient(135deg, #059669, #047857); }
 
-/* FOTO DO PRODUTO */
 .card-foto-wrapper {
   width: 100%;
   height: 150px;
@@ -618,7 +611,6 @@ body {
   color: var(--dark);
 }
 
-/* CONTROLES DE QUANTIDADE E AÇÕES NO CARD */
 .card-acoes {
   display: flex;
   align-items: center;
@@ -699,7 +691,6 @@ body {
   background: var(--primary-light);
 }
 
-/* ESTADO VAZIO */
 .card-vazio {
   text-align: center;
   padding: 48px 24px;
@@ -731,9 +722,7 @@ body {
   background: var(--primary);
 }
 
-/* ==========================================================================
-   BARRA FLUTUANTE DE PEDIDO (STICKY DOCK)
-   ========================================================================== */
+/* BARRA FLUTUANTE DE PEDIDO */
 .barra-flutuante {
   position: fixed;
   bottom: 20px;
@@ -863,9 +852,12 @@ body {
   transform: translateY(-2px);
 }
 
+
+/* --- modals.css --- */
 /* ==========================================================================
-   MODAL DIALOG NATIVO E ESTILIZADO
+   VIEW LAYER - MODAIS & DIÁLOGOS (src/css/modals.css)
    ========================================================================== */
+
 .modal-dialog {
   border: none;
   border-radius: var(--radius-lg);
@@ -951,7 +943,6 @@ body {
   flex: 1;
 }
 
-/* ITENS DENTRO DO MODAL */
 .pedido-itens-lista {
   display: flex;
   flex-direction: column;
@@ -994,7 +985,6 @@ body {
   text-align: right;
 }
 
-/* FORMULÁRIO DE ATENDIMENTO */
 .form-fechamento {
   border-top: 1.5px solid var(--border);
   padding-top: 18px;
@@ -1041,7 +1031,6 @@ body {
   box-shadow: 0 0 0 3px var(--primary-glow);
 }
 
-/* BOX PIX */
 .pix-card {
   background: #f0fdf4;
   border: 1.5px dashed #4ade80;
@@ -1087,7 +1076,6 @@ body {
   background: #14532d;
 }
 
-/* RODAPÉ DO MODAL */
 .modal-footer {
   padding: 18px 22px;
   border-top: 1px solid var(--border);
@@ -1164,9 +1152,6 @@ body {
   transform: translateY(-1px);
 }
 
-/* ==========================================================================
-   TOAST AVISO
-   ========================================================================== */
 .toast-aviso {
   position: fixed;
   bottom: 95px;
@@ -1195,7 +1180,6 @@ body {
   opacity: 1;
 }
 
-/* ANIMAÇÕES */
 @keyframes slideUp {
   from { transform: translateY(30px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
@@ -1211,3 +1195,5 @@ body {
   50% { transform: scale(1.25); }
   100% { transform: scale(1); }
 }
+
+
