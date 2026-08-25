@@ -1,0 +1,11 @@
+{
+  "appId": "com.saborearte.cardapio",
+  "appName": "Cardápio Pro",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#b91c1c"
+    }
+  }
+}
