@@ -1,13 +1,15 @@
 {
   "name": "Sabor & Arte Gourmet - Cardápio Digital",
   "short_name": "Cardápio Pro",
-  "description": "Cardápio digital empresarial interativo para seleção e envio de pedidos online.",
+  "description": "Cardápio digital empresarial interativo para seleção e envio de pedidos online via WhatsApp.",
   "start_url": "index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#f8fafc",
-  "theme_color": "#b91c1c",
+  "orientation": "portrait",
+  "background_color": "#0f172a",
+  "theme_color": "#8b1c1c",
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ]
 }

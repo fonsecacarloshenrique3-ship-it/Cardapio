@@ -1,8 +1,8 @@
 // ==========================================================================
-// SERVICE WORKER PROFISSIONAL (PWA) - CARDÁPIO & PEDIDOS
+// SERVICE WORKER PROFISSIONAL (PWA) - CARDÁPIO GOURMET
 // ==========================================================================
 
-const CACHE_NAME = "cardapio-pro-v3";
+const CACHE_NAME = "cardapio-gourmet-v4";
 
 const ARQUIVOS_ESTATICOS = [
   "./",
@@ -45,6 +45,9 @@ self.addEventListener("activate", (evento) => {
 self.addEventListener("fetch", (evento) => {
   const req = evento.request;
 
+  // Ignora requisições não-GET
+  if (req.method !== 'GET') return;
+
   // Se for navegação (abertura da página HTML), busca rede primeiro para nunca travar versão antiga
   if (req.mode === "navigate") {
     evento.respondWith(
@@ -64,7 +67,7 @@ self.addEventListener("fetch", (evento) => {
     caches.match(req).then((respostaCache) => {
       const buscaRede = fetch(req)
         .then((respostaRede) => {
-          if (respostaRede && respostaRede.status === 200 && respostaRede.type === "basic") {
+          if (respostaRede && respostaRede.status === 200 && (respostaRede.type === "basic" || respostaRede.type === "cors")) {
             const clone = respostaRede.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(req, clone));
           }
@@ -76,4 +79,3 @@ self.addEventListener("fetch", (evento) => {
     })
   );
 });
-

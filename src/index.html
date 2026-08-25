@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Sabor & Arte Gourmet | Cardápio Digital Profissional</title>
 
-  <meta name="description" content="Cardápio digital empresarial interativo para pedidos rápidos, visualização de produtos e cálculo de total.">
-  <meta name="theme-color" content="#b91c1c">
+  <meta name="description" content="Cardápio digital empresarial interativo para pedidos rápidos via WhatsApp, visualização de produtos e cálculo de total.">
+  <meta name="theme-color" content="#8b1c1c">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Cardápio Pro">
@@ -15,29 +15,45 @@
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="manifest" href="manifest.json">
 
-  <!-- Tipografia Profissional -->
+  <!-- Tipografia Gourmet -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- CABEÇALHO EMPRESARIAL -->
+  <!-- BANNER E CABEÇALHO GOURMET -->
   <header class="header-empresa">
+    <div class="header-banner-bg" aria-hidden="true"></div>
+    <div class="header-overlay" aria-hidden="true"></div>
+    
     <div class="header-container">
-      <div class="brand-box">
-        <div class="brand-logo">🍔</div>
-        <div class="brand-texts">
-          <h1 class="brand-name">Sabor & Arte Gourmet</h1>
-          <p class="brand-segment">Restaurante & Hamburgueria Artesanal</p>
+      <div class="header-top-bar">
+        <div class="status-box">
+          <span class="status-pulse"></span>
+          <span class="status-label">Aberto para Pedidos</span>
         </div>
+        <button id="btn-abrir-config" class="btn-config-loja" title="Configurações do Estabelecimento" aria-label="Configurações do Estabelecimento">
+          <span>⚙️ Configurações</span>
+        </button>
       </div>
 
-      <div class="status-box">
-        <span class="status-pulse"></span>
-        <span class="status-label">Aberto para Pedidos</span>
+      <div class="brand-box">
+        <div class="brand-logo-wrapper">
+          <span class="brand-logo">🍔</span>
+        </div>
+        <div class="brand-texts">
+          <h1 class="brand-name" id="display-nome-loja">Sabor & Arte Gourmet</h1>
+          <p class="brand-segment">Restaurante & Hamburgueria Artesanal</p>
+          
+          <div class="brand-badges">
+            <span class="badge-info">⭐ 4.9 (320+ avaliações)</span>
+            <span class="badge-info">⏱️ 25-35 min</span>
+            <span class="badge-info" id="display-taxa-badge">🛵 Entrega R$ 5,00</span>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -48,28 +64,54 @@
     <!-- BARRA DE CONTROLE: PESQUISA E CADASTRO RÁPIDO -->
     <section class="controls-section">
       <div class="search-bar-wrapper">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="campo-busca" placeholder="Buscar no cardápio (ex: burger, batata, coca)..." autocomplete="off">
-        <button id="btn-limpar-busca" class="btn-clear" style="display: none;" title="Limpar pesquisa">✕</button>
+        <span class="search-icon" aria-hidden="true">🔍</span>
+        <input type="text" id="campo-busca" placeholder="Buscar por nome ou ingredientes (ex: burger, bacon, suco)..." autocomplete="off" aria-label="Buscar produtos no cardápio">
+        <button id="btn-limpar-busca" class="btn-clear" style="display: none;" title="Limpar pesquisa" aria-label="Limpar campo de pesquisa">✕</button>
       </div>
 
-      <!-- BOTÃO PARA ABRIR CADASTRO DE NOVO ITEM -->
-      <details class="accordion-cadastro">
+      <!-- PAINEL ACCORDION DE CADASTRO DE NOVO ITEM -->
+      <details class="accordion-cadastro" id="accordion-cadastro">
         <summary class="summary-btn">
-          <span>➕ Cadastrar Novo Item no Cardápio</span>
-          <span class="accordion-arrow">▼</span>
+          <span>✨ Cadastrar Novo Produto no Cardápio</span>
+          <span class="accordion-arrow" aria-hidden="true">▼</span>
         </summary>
         <div class="form-cadastro-item">
           <div class="form-grid">
-            <input id="novo-nome" type="text" placeholder="Nome do produto (ex: X-Bacon)" required>
-            <select id="nova-categoria">
-              <option value="lanches">🍔 Lanches</option>
-              <option value="porcoes">🍟 Porções</option>
-              <option value="bebidas">🥤 Bebidas</option>
-              <option value="sobremesas">🍰 Sobremesas</option>
-            </select>
-            <input id="novo-preco" type="number" step="0.50" min="0" placeholder="Preço R$ (ex: 29.90)" required>
-            <input id="nova-descricao" type="text" placeholder="Ingredientes / Descrição breve">
+            <div class="form-field">
+              <label for="novo-nome">Nome do Produto *</label>
+              <input id="novo-nome" type="text" placeholder="Ex: Monster Cheese Burger" required>
+            </div>
+            <div class="form-field">
+              <label for="nova-categoria">Categoria *</label>
+              <select id="nova-categoria">
+                <option value="lanches">🍔 Lanches</option>
+                <option value="porcoes">🍟 Porções</option>
+                <option value="bebidas">🥤 Bebidas</option>
+                <option value="sobremesas">🍰 Sobremesas</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="novo-preco">Preço R$ *</label>
+              <input id="novo-preco" type="number" step="0.50" min="0" placeholder="Ex: 34.90" required>
+            </div>
+            <div class="form-field">
+              <label for="novo-badge">Destaque (opcional)</label>
+              <select id="novo-badge">
+                <option value="">Sem Destaque</option>
+                <option value="Mais Pedido">🔥 Mais Pedido</option>
+                <option value="Chef Special">⭐ Chef Special</option>
+                <option value="Novo">✨ Novo</option>
+                <option value="Vegetariano">🌱 Vegetariano</option>
+              </select>
+            </div>
+            <div class="form-field full-width">
+              <label for="nova-imagem">URL da Imagem (opcional)</label>
+              <input id="nova-imagem" type="url" placeholder="https://exemplo.com/foto-hamburguer.jpg">
+            </div>
+            <div class="form-field full-width">
+              <label for="nova-descricao">Ingredientes / Descrição</label>
+              <input id="nova-descricao" type="text" placeholder="Pão brioche, blend 180g, cheddar fatiado...">
+            </div>
           </div>
           <button id="btn-salvar-novo" class="btn-adicionar-produto">Cadastrar Produto</button>
         </div>
@@ -91,7 +133,7 @@
     <section class="cardapio-section">
       <div class="section-title-row">
         <h2 id="titulo-categoria">Todos os Produtos</h2>
-        <span id="badge-total-itens" class="badge-count">0 produtos</span>
+        <span id="badge-total-itens" class="badge-count" aria-live="polite">0 produtos</span>
       </div>
 
       <div class="grid-produtos" id="grid-produtos">
@@ -101,8 +143,9 @@
       <!-- MENSAGEM QUANDO NENHUM ITEM FOR ENCONTRADO -->
       <div id="vazio-alerta" class="card-vazio" style="display: none;">
         <span class="vazio-icon">🔍</span>
-        <h3>Nenhum item encontrado</h3>
-        <p>Tente buscar por outro termo ou selecione outra categoria.</p>
+        <h3>Nenhum produto localizado</h3>
+        <p>Não encontramos resultados para a sua busca. Tente pesquisar outro termo ou trocar de categoria.</p>
+        <button id="btn-reset-busca" class="btn-secundario-vazio">Ver Todos os Produtos</button>
       </div>
     </section>
 
@@ -114,18 +157,18 @@
       <div class="barra-info">
         <div class="carrinho-icone-box">
           🛒
-          <span class="carrinho-badge" id="carrinho-qtd">0</span>
+          <span class="carrinho-badge" id="carrinho-qtd" aria-live="polite">0</span>
         </div>
         <div class="carrinho-textos">
           <span class="carrinho-titulo">Seu Pedido</span>
-          <span class="carrinho-detalhe" id="carrinho-resumo-texto">0 itens selecionados</span>
+          <span class="carrinho-detalhe" id="carrinho-resumo-texto" aria-live="polite">0 itens selecionados</span>
         </div>
       </div>
 
       <div class="barra-acoes">
         <div class="carrinho-total-box">
           <span class="total-rotulo">Subtotal</span>
-          <span class="total-valor" id="carrinho-total-valor">R$ 0,00</span>
+          <span class="total-valor" id="carrinho-total-valor" aria-live="polite">R$ 0,00</span>
         </div>
         <button id="btn-abrir-pedido" class="btn-finalizar-pedido">
           <span>Ver Pedido</span>
@@ -142,11 +185,11 @@
         <div class="modal-header-title">
           <span class="modal-icon">🛍️</span>
           <div>
-            <h3>Conferir Pedido</h3>
-            <p class="modal-sub">Revise os itens e informe seus dados</p>
+            <h3>Conferir & Finalizar Pedido</h3>
+            <p class="modal-sub">Revise os itens e informe os dados para entrega</p>
           </div>
         </div>
-        <button id="btn-fechar-modal" class="btn-fechar" aria-label="Fechar">✕</button>
+        <button id="btn-fechar-modal" class="btn-fechar" aria-label="Fechar modal de pedido">✕</button>
       </div>
 
       <div class="modal-body">
@@ -156,41 +199,58 @@
         </div>
 
         <!-- FORMULÁRIO DE ENTREGA / ATENDIMENTO -->
-        <form id="form-fechamento" class="form-fechamento">
-          <h4 class="form-titulo">Informações do Cliente</h4>
+        <form id="form-fechamento" class="form-fechamento" onsubmit="return false;">
+          <h4 class="form-titulo">Informações de Entrega & Cliente</h4>
 
           <div class="input-grupo">
-            <label for="cliente-nome">Nome do Cliente *</label>
+            <label for="cliente-nome">Nome Completo do Cliente *</label>
             <input type="text" id="cliente-nome" placeholder="Digite seu nome completo" required>
           </div>
 
           <div class="input-grupo">
-            <label for="tipo-atendimento">Tipo de Atendimento *</label>
+            <label for="tipo-atendimento">Forma de Atendimento *</label>
             <select id="tipo-atendimento">
+              <option value="Delivery">Entrega em Domicílio (Delivery)</option>
               <option value="Mesa">Consumo no Local (Mesa)</option>
-              <option value="Delivery">Entrega (Delivery)</option>
               <option value="Balcão">Retirada no Balcão</option>
             </select>
           </div>
 
           <div class="input-grupo" id="grupo-local">
-            <label for="cliente-local" id="rotulo-local">Número da Mesa *</label>
-            <input type="text" id="cliente-local" placeholder="Ex: Mesa 05" required>
+            <label for="cliente-local" id="rotulo-local">Endereço Completo de Entrega *</label>
+            <input type="text" id="cliente-local" placeholder="Rua, Número, Bairro, Ponto de Referência" required>
           </div>
 
           <div class="input-grupo">
             <label for="forma-pagamento">Forma de Pagamento *</label>
             <select id="forma-pagamento">
-              <option value="PIX">PIX</option>
-              <option value="Cartão de Crédito">Cartão de Crédito</option>
-              <option value="Cartão de Débito">Cartão de Débito</option>
+              <option value="PIX">PIX (Chave Instantânea)</option>
+              <option value="Cartão de Crédito">Cartão de Crédito (Na entrega)</option>
+              <option value="Cartão de Débito">Cartão de Débito (Na entrega)</option>
               <option value="Dinheiro">Dinheiro</option>
             </select>
           </div>
 
+          <!-- CAMPO PIX -->
+          <div class="input-grupo box-pix" id="grupo-pix" style="display: none;">
+            <div class="pix-card">
+              <div class="pix-info">
+                <span class="pix-badge">⚡ Chave PIX do Restaurante</span>
+                <span class="pix-chave" id="pix-chave-texto">pix@saborearte.com.br</span>
+              </div>
+              <button type="button" id="btn-copiar-pix" class="btn-copiar">Copiar Chave</button>
+            </div>
+          </div>
+
+          <!-- CAMPO DINHEIRO / TROCO -->
+          <div class="input-grupo" id="grupo-troco" style="display: none;">
+            <label for="pedido-troco">Troco para Quanto? (R$)</label>
+            <input type="text" id="pedido-troco" placeholder="Ex: R$ 50,00 ou Não preciso de troco">
+          </div>
+
           <div class="input-grupo">
-            <label for="pedido-obs">Observações (opcional)</label>
-            <textarea id="pedido-obs" rows="2" placeholder="Ex: Sem cebola, carne bem passada, troco para R$ 50..."></textarea>
+            <label for="pedido-obs">Observações do Pedido (opcional)</label>
+            <textarea id="pedido-obs" rows="2" placeholder="Ex: Sem cebola, molho extra, carne bem passada..."></textarea>
           </div>
         </form>
       </div>
@@ -199,17 +259,21 @@
       <div class="modal-footer">
         <div class="resumo-valores">
           <div class="resumo-linha">
-            <span>Quantidade de Itens:</span>
-            <span id="modal-qtd-total">0</span>
+            <span>Subtotal (itens):</span>
+            <span id="modal-subtotal-valor">R$ 0,00</span>
+          </div>
+          <div class="resumo-linha" id="linha-taxa-entrega">
+            <span>Taxa de Entrega:</span>
+            <span id="modal-taxa-valor">R$ 5,00</span>
           </div>
           <div class="resumo-linha total-destaque-linha">
-            <span>Total a Pagar:</span>
+            <span>Total Geral:</span>
             <span id="modal-valor-total" class="preco-verde">R$ 0,00</span>
           </div>
         </div>
 
         <div class="botoes-modal">
-          <button type="button" id="btn-limpar-tudo" class="btn-esvaziar">Limpar</button>
+          <button type="button" id="btn-limpar-tudo" class="btn-esvaziar">Esvaziar</button>
           <button type="button" id="btn-enviar-whatsapp" class="btn-whatsapp-empresa">
             <span>📲 Enviar Pedido via WhatsApp</span>
           </button>
@@ -218,8 +282,123 @@
     </div>
   </dialog>
 
+  <!-- MODAL DE EDIÇÃO DE PRODUTO (<dialog>) -->
+  <dialog id="modal-editar-produto" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-header-title">
+          <span class="modal-icon">✏️</span>
+          <div>
+            <h3>Editar Produto</h3>
+            <p class="modal-sub">Atualize os detalhes e o preço do item</p>
+          </div>
+        </div>
+        <button id="btn-fechar-editar" class="btn-fechar" aria-label="Fechar modal de edição">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-editar-produto" onsubmit="return false;">
+          <input type="hidden" id="edit-id">
+          <div class="input-grupo">
+            <label for="edit-nome">Nome do Produto *</label>
+            <input type="text" id="edit-nome" required>
+          </div>
+          <div class="input-grupo">
+            <label for="edit-categoria">Categoria *</label>
+            <select id="edit-categoria">
+              <option value="lanches">🍔 Lanches</option>
+              <option value="porcoes">🍟 Porções</option>
+              <option value="bebidas">🥤 Bebidas</option>
+              <option value="sobremesas">🍰 Sobremesas</option>
+            </select>
+          </div>
+          <div class="input-grupo">
+            <label for="edit-preco">Preço R$ *</label>
+            <input type="number" step="0.50" min="0" id="edit-preco" required>
+          </div>
+          <div class="input-grupo">
+            <label for="edit-badge">Destaque (Badge)</label>
+            <select id="edit-badge">
+              <option value="">Sem Destaque</option>
+              <option value="Mais Pedido">🔥 Mais Pedido</option>
+              <option value="Chef Special">⭐ Chef Special</option>
+              <option value="Novo">✨ Novo</option>
+              <option value="Vegetariano">🌱 Vegetariano</option>
+            </select>
+          </div>
+          <div class="input-grupo">
+            <label for="edit-imagem">URL da Foto</label>
+            <input type="url" id="edit-imagem" placeholder="https://exemplo.com/imagem.jpg">
+          </div>
+          <div class="input-grupo">
+            <label for="edit-descricao">Ingredientes / Descrição</label>
+            <textarea id="edit-descricao" rows="2"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn-salvar-edicao" class="btn-adicionar-produto" style="width: 100%;">Salvar Alterações</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- MODAL DE CONFIGURAÇÕES DO ESTABELECIMENTO (<dialog>) -->
+  <dialog id="modal-configuracoes" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-header-title">
+          <span class="modal-icon">⚙️</span>
+          <div>
+            <h3>Configurações do Restaurante</h3>
+            <p class="modal-sub">Defina os dados para recebimento de pedidos</p>
+          </div>
+        </div>
+        <button id="btn-fechar-config" class="btn-fechar" aria-label="Fechar configurações">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-config" onsubmit="return false;">
+          <div class="input-grupo">
+            <label for="config-nome-loja">Nome do Estabelecimento</label>
+            <input type="text" id="config-nome-loja" placeholder="Ex: Sabor & Arte Gourmet">
+          </div>
+          <div class="input-grupo">
+            <label for="config-whatsapp">Número do WhatsApp (com DDD)</label>
+            <input type="text" id="config-whatsapp" placeholder="Ex: 5579999999999">
+            <small style="color: var(--text-muted); font-size: 0.75rem;">Digite apenas números com código do país (ex: 5579999999999)</small>
+          </div>
+          <div class="input-grupo">
+            <label for="config-taxa-entrega">Taxa Padrão de Entrega (R$)</label>
+            <input type="number" step="0.50" min="0" id="config-taxa-entrega" placeholder="Ex: 5.00">
+          </div>
+          <div class="input-grupo">
+            <label for="config-chave-pix">Chave PIX da Loja</label>
+            <input type="text" id="config-chave-pix" placeholder="Ex: pix@saborearte.com.br ou CNPJ">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn-salvar-config" class="btn-adicionar-produto" style="width: 100%;">Salvar Configurações</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- MODAL DE CONFIRMAÇÃO CUSTOMIZADO (<dialog>) -->
+  <dialog id="modal-confirmacao" class="modal-dialog modal-small">
+    <div class="modal-content">
+      <div class="modal-body" style="text-align: center; padding: 24px;">
+        <span id="confirm-icon" style="font-size: 2.5rem; display: block; margin-bottom: 12px;">⚠️</span>
+        <h3 id="confirm-titulo" style="font-size: 1.15rem; font-weight: 800; color: var(--dark); margin-bottom: 8px;">Tem certeza?</h3>
+        <p id="confirm-mensagem" style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 20px;">Essa ação não poderá ser desfeita.</p>
+        
+        <div style="display: flex; gap: 10px; justify-content: center;">
+          <button type="button" id="btn-confirm-cancelar" class="btn-fechar" style="width: auto; height: auto; border-radius: var(--radius-sm); padding: 8px 16px;">Cancelar</button>
+          <button type="button" id="btn-confirm-ok" class="btn-esvaziar" style="padding: 8px 16px;">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
   <!-- NOTIFICAÇÃO TOAST -->
-  <div id="toast" class="toast-aviso"></div>
+  <div id="toast" class="toast-aviso" role="alert" aria-live="polite"></div>
 
   <!-- SERVICE WORKER (PWA) -->
   <script>
@@ -236,4 +415,3 @@
   <script src="app.js"></script>
 </body>
 </html>
-
